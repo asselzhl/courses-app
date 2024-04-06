@@ -1,40 +1,40 @@
-import React from "react";
+import React from 'react';
 
-import Button from "../../../../common/Button/Button";
+import Button from '../../../../common/Button/Button';
 
 const CourseCard = ({ courseName, duration, creationDate, description }) => {
+	const durationInHours = `${Math.floor(duration / 60)}:${duration % 60}`;
 
-  const durationInHours = `${Math.floor(duration / 60)}:${duration % 60}`; 
+	return (
+		<div className='p-8 bg-[#FFFFFF] rounded border-l-8 border-[#333E48] shadow-lg shadow-slate-300'>
+			<h3 className='text-xl font-bold leading-8 mb-2.5'>{courseName}</h3>
+			<div className='flex gap-x-12'>
+				<div className='w-[60%]'>
+					<p>{description}</p>
+				</div>
 
-  return (
-    <div className="p-8 bg-[#FFFFFF] rounded border-l-8 border-[#333E48] shadow-lg shadow-slate-300">
-      <h3 className="text-xl font-bold leading-8 mb-2.5">{courseName}</h3>
-      <div className="flex gap-x-12">
-        <div className="w-[60%]">
-          <p>{description}</p>
-        </div>
-
-        <div>
-          <div className="mb-8">
-            <p>
-              <span className="font-bold">Authors: </span>Dave Haisenberg, Tony Ja
-            </p>
-            <p>
-              <span className="font-bold">Duration: </span>
-              {durationInHours} hours
-            </p>
-            <p>
-              <span className="font-bold">Created: </span>
-              {creationDate}
-            </p>
-          </div>
-          <div>
-            <Button text="show course" />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+				<div>
+					<div className='mb-8'>
+						<p>
+							<span className='font-bold'>Authors: </span>Dave Haisenberg, Tony
+							Ja
+						</p>
+						<p>
+							<span className='font-bold'>Duration: </span>
+							{durationInHours} hours
+						</p>
+						<p>
+							<span className='font-bold'>Created: </span>
+							{creationDate}
+						</p>
+					</div>
+					<div>
+						<Button text='show course' />
+					</div>
+				</div>
+			</div>
+		</div>
+	);
 };
 
 export default CourseCard;
