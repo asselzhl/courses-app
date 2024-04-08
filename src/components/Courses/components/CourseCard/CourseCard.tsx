@@ -2,6 +2,13 @@ import React from 'react';
 
 import Button from '../../../../common/Button/Button';
 
+const style = {
+	courseCardWrapper: `p-8 bg-[#FFFFFF] rounded border-l-8 border-[#333E48] shadow-lg shadow-slate-300`,
+	courseName: `text-xl font-bold leading-8 mb-2.5`,
+	courseDesc: `w-[60%]`,
+}
+
+
 const CourseCard = ({
 	id,
 	courseName,
@@ -9,16 +16,20 @@ const CourseCard = ({
 	creationDate,
 	description,
 	authors,
+	toggleCourseInfo,
+	getCourseInfo
 }) => {
+
 	function showCourse() {
-		console.log(id);
+		toggleCourseInfo();
+		getCourseInfo(id);
 	}
 
 	return (
-		<div className='p-8 bg-[#FFFFFF] rounded border-l-8 border-[#333E48] shadow-lg shadow-slate-300'>
-			<h3 className='text-xl font-bold leading-8 mb-2.5'>{courseName}</h3>
+		<div className={style.courseCardWrapper}>
+			<h3 className={style.courseName}>{courseName}</h3>
 			<div className='flex gap-x-12'>
-				<div className='w-[60%]'>
+				<div className={style.courseDesc}>
 					<p>{description}</p>
 				</div>
 
