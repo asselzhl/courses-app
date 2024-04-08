@@ -10,9 +10,8 @@ const CourseCard = ({
 	description,
 	authors,
 }) => {
-
-	function showCourse () {
-		console.log(id)
+	function showCourse() {
+		console.log(id);
 	}
 
 	return (
