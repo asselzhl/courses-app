@@ -6,8 +6,7 @@ const style = {
 	courseCardWrapper: `p-8 bg-[#FFFFFF] rounded border-l-8 border-[#333E48] shadow-lg shadow-slate-300`,
 	courseName: `text-xl font-bold leading-8 mb-2.5`,
 	courseDesc: `w-[60%]`,
-}
-
+};
 
 const CourseCard = ({
 	id,
@@ -17,9 +16,8 @@ const CourseCard = ({
 	description,
 	authors,
 	toggleCourseInfo,
-	getCourseInfo
+	getCourseInfo,
 }) => {
-
 	function showCourse() {
 		toggleCourseInfo();
 		getCourseInfo(id);
