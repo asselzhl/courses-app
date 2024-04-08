@@ -1,3 +1,3 @@
-export function formatDate(date) {
+export function formatDate(date: string): string {
 	return date.replaceAll('/', '.');
 }

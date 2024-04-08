@@ -1,8 +1,8 @@
-export function getCourseDuration(durationInMinutes) {
+export function getCourseDuration(durationInMinutes: number): string {
 	let hours: string | number = Math.floor(durationInMinutes / 60);
-	const minutes = durationInMinutes % 60;
+	const minutes: number = durationInMinutes % 60;
 
-	let unit;
+	let unit: string;
 	if (hours === 1) {
 		unit = 'hour';
 	} else {

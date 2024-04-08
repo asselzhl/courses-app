@@ -9,7 +9,7 @@ const EmptyCourseList = () => {
 				Your List Is Empty
 			</h2>
 			<h3 className='text-[#333E48] mb-10'>
-				Please use ’Add New Course’ button to add your first course
+				Please use 'Add New Course' button to add your first course
 			</h3>
 			<Button text='Add new course' />
 		</div>
