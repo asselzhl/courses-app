@@ -3,13 +3,17 @@ import React from 'react';
 import Button from '../../../../common/Button/Button';
 
 const CourseCard = ({
+	id,
 	courseName,
 	duration,
 	creationDate,
 	description,
 	authors,
 }) => {
-	const durationInHours = `${Math.floor(duration / 60)}:${duration % 60}`;
+
+	function showCourse () {
+		console.log(id)
+	}
 
 	return (
 		<div className='p-8 bg-[#FFFFFF] rounded border-l-8 border-[#333E48] shadow-lg shadow-slate-300'>
@@ -23,19 +27,19 @@ const CourseCard = ({
 					<div className='mb-8'>
 						<p className='truncate'>
 							<span className='font-bold'>Authors: </span>
-							{authors.join(', ')}
+							{authors}
 						</p>
 						<p>
 							<span className='font-bold'>Duration: </span>
-							{durationInHours} hours
+							{duration}
 						</p>
 						<p>
 							<span className='font-bold'>Created: </span>
-							{creationDate.replaceAll('/', '.')}
+							{creationDate}
 						</p>
 					</div>
 					<div>
-						<Button text='show course' />
+						<Button text='show course' onClick={showCourse} />
 					</div>
 				</div>
 			</div>
