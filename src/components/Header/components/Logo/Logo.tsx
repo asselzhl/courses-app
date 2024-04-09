@@ -2,7 +2,7 @@ import React from 'react';
 
 import logo from './assets/img/logo.png';
 
-const Logo = () => {
+export const Logo = () => {
 	return (
 		<div>
 			<img src={logo} alt='' />
@@ -10,4 +10,4 @@ const Logo = () => {
 	);
 };
 
-export default Logo;
+
