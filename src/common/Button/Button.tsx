@@ -1,13 +1,13 @@
-import React from "react";
+import React from 'react';
 
 const style = {
-  pageButton: `uppercase bg-[#007298] text-white rounded py-[13px] px-9 hover:opacity-80 duration-300`,
+	pageButton: `uppercase bg-[#007298] text-white rounded py-[13px] px-9 hover:opacity-80 duration-300`,
 };
 
 export const Button = ({ text, onClick }) => {
-  return (
-    <button className={style.pageButton} onClick={onClick}>
-      {text}
-    </button>
-  );
+	return (
+		<button className={style.pageButton} onClick={onClick}>
+			{text}
+		</button>
+	);
 };
