@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { CourseCard } from './components/CourseCard/CourseCard';
 import { EmptyCourseList } from '../EmptyCourseList/EmptyCourseList';
 import { CourseInfo } from '../CourseInfo/CourseInfo';
-import { Input } from '../../common/Input/Input';
+import { SearchBar } from './components/SearchBar/SearchBar';
 import { Button } from '../../common/Button/Button';
 
 import { formatDate } from '../../helpers/formatCreationDate';
@@ -62,7 +62,7 @@ export const Courses = ({ mockedCoursesList, mockedAuthorsList }) => {
 		return (
 			<div className={style.coursesListWrapper}>
 				<div className='flex justify-between'>
-					<Input />
+					<SearchBar />
 					<Button text='Add new course' onClick={() => {}} />
 				</div>
 
