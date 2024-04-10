@@ -1,28 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-import { CourseCard } from './components/CourseCard/CourseCard';
-import { EmptyCourseList } from '../EmptyCourseList/EmptyCourseList';
-import { CourseInfo } from '../CourseInfo/CourseInfo';
-import { SearchBar } from './components/SearchBar/SearchBar';
-import { Button } from '../../common/Button/Button';
+import { CourseCard } from "./components/CourseCard/CourseCard";
+import { EmptyCourseList } from "../EmptyCourseList/EmptyCourseList";
+import { CourseInfo } from "../CourseInfo/CourseInfo";
+import { CreateCourse } from "../CreateCourse/CreateCourse";
+import { SearchBar } from "./components/SearchBar/SearchBar";
+import { Button } from "../../common/Button/Button";
 
 import { convertDateToDotFormat } from '../../helpers/convertDateToDotFormat';
 import { getCourseDuration } from '../../helpers/getCourseDuration';
 import { getAuthorsName } from '../../helpers/getAuthorsName';
 
 const style = {
-	coursesListWrapper: `bg-[#F7F7F7] h-full py-20 px-40 flex flex-col gap-y-8`,
-	emptyCourseListWrapper: `bg-[#F7F7F7] h-[90vh] py-20 px-40 flex flex-col gap-y-8 justify-center items-center`,
-	courseInfoWrapper: `bg-[#F7F7F7] h-screen py-20 px-40 flex flex-col gap-y-8`,
+  coursesListWrapper: `bg-[#F7F7F7] h-full py-20 px-40 flex flex-col gap-y-8`,
+  emptyCourseListWrapper: `bg-[#F7F7F7] h-[90vh] py-20 px-40 flex flex-col gap-y-8 justify-center items-center`,
+  courseInfoWrapper: `bg-[#F7F7F7] h-screen py-20 px-40 flex flex-col gap-y-8`,
+  createCourseWrapper: `bg-[#F7F7F7] h-full py-20 px-40 flex flex-col`,
 };
 
 interface MockedCoursesListInterface {
-	id: string;
-	title: string;
-	description: string;
-	creationDate: string;
-	duration: number;
-	authors: string[];
+  id: string;
+  title: string;
+  description: string;
+  creationDate: string;
+  duration: number;
+  authors: string[];
 }
 
 interface MockedAuthorsListInterface {
@@ -43,9 +45,13 @@ export const Courses = ({
 	const [showCourseInfo, setShowCourseInfo] = useState<boolean>(false);
 	const [courseInfo, setCourseInfo] = useState<courseInfoType>(null);
 
-	const toggleCourseInfo = () => {
-		setShowCourseInfo(!showCourseInfo);
-	};
+  const toggleCourseInfo = () => {
+    setShowCourseInfo(!showCourseInfo);
+  };
+
+  const toggleCourseForm = () => {
+    setShowCourseForm(!showCourseForm);
+  };
 
 	const getCourseInfo = function (courseID: string) {
 		const info = mockedCoursesList.find(
@@ -70,42 +76,42 @@ export const Courses = ({
 		);
 	}
 
-	if (mockedCoursesList.length && !showCourseInfo) {
-		return (
-			<div className={style.coursesListWrapper}>
-				<div className='flex justify-between'>
-					<SearchBar />
-					<Button text='Add new course' onClick={() => {}} />
-				</div>
+  if (mockedCoursesList.length && !showCourseInfo && !showCourseForm) {
+    return (
+      <div className={style.coursesListWrapper}>
+        <div className="flex justify-between">
+          <SearchBar />
+          <Button text="Add new course" onClick={toggleCourseForm} />
+        </div>
 
 				{mockedCoursesList.map((course: MockedCoursesListInterface) => {
 					const authors = getAuthorsName(course.authors, mockedAuthorsList);
 					const creationDate = convertDateToDotFormat(course.creationDate);
 					const duration = getCourseDuration(course.duration);
 
-					return (
-						<CourseCard
-							key={course.id}
-							id={course.id}
-							courseName={course.title}
-							duration={duration}
-							creationDate={creationDate}
-							description={course.description}
-							authors={authors}
-							toggleCourseInfo={toggleCourseInfo}
-							getCourseInfo={getCourseInfo}
-						/>
-					);
-				})}
-			</div>
-		);
-	}
+          return (
+            <CourseCard
+              key={course.id}
+              id={course.id}
+              courseName={course.title}
+              duration={duration}
+              creationDate={creationDate}
+              description={course.description}
+              authors={authors}
+              toggleCourseInfo={toggleCourseInfo}
+              getCourseInfo={getCourseInfo}
+            />
+          );
+        })}
+      </div>
+    );
+  }
 
-	if (!mockedCoursesList.length) {
-		return (
-			<div className={style.emptyCourseListWrapper}>
-				<EmptyCourseList />
-			</div>
-		);
-	}
+  if (!mockedCoursesList.length) {
+    return (
+      <div className={style.emptyCourseListWrapper}>
+        <EmptyCourseList />
+      </div>
+    );
+  }
 };
