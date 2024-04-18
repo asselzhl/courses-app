@@ -9,7 +9,7 @@ const style = {
 	line: `w-[1px] bg-[#CFCFCF]`,
 	info: `w-[50%] flex flex-col gap-y-4`,
 	content: `flex gap-x-8`,
-	infoText: `flex justify-between text-[#333E48]`
+	infoText: `flex justify-between text-[#333E48]`,
 };
 
 export const CourseInfo = ({
