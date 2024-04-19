@@ -60,6 +60,17 @@ export const Courses = ({
 		setCourseInfo(info);
 	};
 
+	if (showCourseForm) {
+		return (
+			<div className={style.createCourseWrapper}>
+				<CreateCourse
+					mockedAuthorsList={mockedAuthorsList}
+					toggleCourseForm={toggleCourseForm}
+				/>
+			</div>
+		);
+	}
+
 	if (showCourseInfo && courseInfo) {
 		return (
 			<div className={style.courseInfoWrapper}>

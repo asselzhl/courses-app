@@ -1,5 +1,9 @@
 import React from 'react';
 
+const style = {
+	textarea: `py-3 px-4 leading-6 rounded border border-[#CFCFCF] focus:outline-[#007298] w-full`
+};
+
 export const Textarea = ({
 	labelText,
 	placeholderText,
@@ -17,7 +21,7 @@ export const Textarea = ({
 				name=''
 				id={textareaID}
 				placeholder={placeholderText}
-				className='py-3 px-4 leading-6 rounded border border-[#CFCFCF] focus:outline-[#007298] w-full'
+				className={style.textarea}
 				onChange={onChange}
 			></textarea>
 		</>
