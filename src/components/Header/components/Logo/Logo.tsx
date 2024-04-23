@@ -1,11 +1,7 @@
-import React from 'react';
+import React from "react";
 
-import logo from './assets/img/logo.png';
+import logo from "./assets/img/logo.png";
 
 export const Logo = () => {
-	return (
-		<div>
-			<img src={logo} alt='' />
-		</div>
-	);
+  return <img src={logo} alt="" />;
 };

@@ -6,7 +6,7 @@ import { CourseInfo } from '../CourseInfo/CourseInfo';
 import { SearchBar } from './components/SearchBar/SearchBar';
 import { Button } from '../../common/Button/Button';
 
-import { formatDate } from '../../helpers/formatCreationDate';
+import { convertDateToDotFormat } from '../../helpers/convertDateToDotFormat';
 import { getCourseDuration } from '../../helpers/getCourseDuration';
 import { getAuthorsName } from '../../helpers/getAuthorsName';
 
@@ -25,9 +25,18 @@ interface MockedCoursesListInterface {
 	authors: string[];
 }
 
+interface MockedAuthorsListInterface {
+	id: string;
+	name: string;
+}
+interface CoursesProps {
+	mockedCoursesList: MockedCoursesListInterface[];
+	mockedAuthorsList: MockedAuthorsListInterface[];
+}
+
 type courseInfoType = MockedCoursesListInterface | null;
 
-export const Courses = ({ mockedCoursesList, mockedAuthorsList }) => {
+export const Courses = ({ mockedCoursesList, mockedAuthorsList }: CoursesProps) => {
 	const [showCourseInfo, setShowCourseInfo] = useState<boolean>(false);
 	const [courseInfo, setCourseInfo] = useState<courseInfoType>(null);
 
@@ -50,7 +59,7 @@ export const Courses = ({ mockedCoursesList, mockedAuthorsList }) => {
 					description={courseInfo.description}
 					id={courseInfo.id}
 					duration={getCourseDuration(courseInfo.duration)}
-					creationDate={formatDate(courseInfo.creationDate)}
+					creationDate={convertDateToDotFormat(courseInfo.creationDate)}
 					authors={getAuthorsName(courseInfo.authors, mockedAuthorsList)}
 					toggleCourseInfo={toggleCourseInfo}
 				/>
@@ -68,7 +77,7 @@ export const Courses = ({ mockedCoursesList, mockedAuthorsList }) => {
 
 				{mockedCoursesList.map((course: MockedCoursesListInterface) => {
 					const authors = getAuthorsName(course.authors, mockedAuthorsList);
-					const creationDate = formatDate(course.creationDate);
+					const creationDate = convertDateToDotFormat(course.creationDate);
 					const duration = getCourseDuration(course.duration);
 
 					return (
