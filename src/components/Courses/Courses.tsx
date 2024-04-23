@@ -36,7 +36,10 @@ interface CoursesProps {
 
 type courseInfoType = MockedCoursesListInterface | null;
 
-export const Courses = ({ mockedCoursesList, mockedAuthorsList }: CoursesProps) => {
+export const Courses = ({
+	mockedCoursesList,
+	mockedAuthorsList,
+}: CoursesProps) => {
 	const [showCourseInfo, setShowCourseInfo] = useState<boolean>(false);
 	const [courseInfo, setCourseInfo] = useState<courseInfoType>(null);
 
