@@ -8,6 +8,8 @@ interface InputProps {
 	type: string;
 	labelText: string;
 	placeholderText: string;
+	name: string;
+	value: string;
 	inputID: string;
 	onChange: () => void;
 }
@@ -20,7 +22,7 @@ export const Input = ({
 	value,
 	inputID,
 	onChange,
-}) => {
+}: InputProps) => {
 	return (
 		<label htmlFor={inputID} className='font-bold capitalize'>
 			{labelText}
