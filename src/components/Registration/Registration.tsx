@@ -1,9 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Input } from '../../common/Input/Input';
 import { Button } from '../../common/Button/Button';
 
 export const Registration = () => {
+	const initialRegistrartionData = {
+		username: '',
+		email: '',
+		password: ''
+	};
+
+	const [registrationData, setRegistrationData] = useState(initialRegistrartionData);
+
+	const handleRegistrationDataChange = (e) => {
+		setRegistrationData((prevValues) => {
+			return { ...prevValues, [e.target.name]: e.target.value };
+		})
+	};
+
+	const submitRegistrationData = () => {
+		
+	};
+
 	return (
 		<div>
 			<h2 className='text-[#333E48] font-bold text-3xl mb-6'>Registration</h2>
@@ -14,8 +32,9 @@ export const Registration = () => {
 						type='text'
 						labelText='Name'
 						placeholderText='Name'
+						name='username'
 						inputID='username'
-						onChange={() => {}}
+						onChange={handleRegistrationDataChange}
 					/>
 				</div>
 				<div>
@@ -23,8 +42,9 @@ export const Registration = () => {
 						type='email'
 						labelText='Email'
 						placeholderText='Email'
+						name='email'
 						inputID='email'
-						onChange={() => {}}
+						onChange={handleRegistrationDataChange}
 					/>
 				</div>
 				<div>
@@ -32,11 +52,12 @@ export const Registration = () => {
 						type='password'
 						labelText='Password'
 						placeholderText='Password'
+						name='password'
 						inputID='password'
-						onChange={() => {}}
+						onChange={handleRegistrationDataChange}
 					/>
 				</div>
-				<Button text='login' onClick={() => {}} />
+				<Button text='login' onClick={submitRegistrationData} />
 				<div className='text-center'>
 					<span>If you have an account you may </span>
 					<a href='google.com' className='font-bold'>

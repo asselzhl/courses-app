@@ -79,7 +79,6 @@ export const CreateCourse = ({ mockedAuthorsList, toggleCourseForm }) => {
 		});
 		setAuthorToCreate('');
 	};
-	console.log(courseCreationData);
 	return (
 		<div>
 			<h2 className={style.sectionTitle}>Course edit/create page</h2>
