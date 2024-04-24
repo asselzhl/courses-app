@@ -7,19 +7,21 @@ export const Registration = () => {
 	const initialRegistrartionData = {
 		username: '',
 		email: '',
-		password: ''
+		password: '',
 	};
 
-	const [registrationData, setRegistrationData] = useState(initialRegistrartionData);
+	const [registrationData, setRegistrationData] = useState(
+		initialRegistrartionData
+	);
 
 	const handleRegistrationDataChange = (e) => {
 		setRegistrationData((prevValues) => {
 			return { ...prevValues, [e.target.name]: e.target.value };
-		})
+		});
 	};
 
 	const submitRegistrationData = () => {
-		
+		console.log(Object.values(registrationData));
 	};
 
 	return (
