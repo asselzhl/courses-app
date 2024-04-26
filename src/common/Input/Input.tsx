@@ -11,7 +11,8 @@ interface InputProps {
 	name: string;
 	value: string;
 	inputID: string;
-	onChange: () => void;
+	/* eslint-disable */ 
+	onChange: (e?: any) => void;
 }
 
 export const Input = ({

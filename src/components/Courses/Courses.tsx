@@ -46,9 +46,12 @@ export const Courses = ({
 	const [courseInfo, setCourseInfo] = useState<courseInfoType>(null);
 	const [showCourseForm, setShowCourseForm] = useState<boolean>(false);
 
+	const [coursesList, setCoursesList] = useState(mockedCoursesList);
+	const [authorsList, setAuthorsList] = useState(mockedAuthorsList);
+
 	const [searchValue, setSearchValue] = useState('');
 
-	const filteredCourses = mockedCoursesList.filter(
+	const filteredCourses = coursesList.filter(
 		(course) =>
 			course.title.toLowerCase().includes(searchValue.toLowerCase().trim()) ||
 			course.id.toLowerCase().includes(searchValue.toLowerCase().trim())
@@ -67,7 +70,7 @@ export const Courses = ({
 	};
 
 	const getCourseInfo = function (courseID: string) {
-		const info = mockedCoursesList.find(
+		const info = coursesList.find(
 			(course: MockedCoursesListInterface) => course.id === courseID
 		);
 		setCourseInfo(info);
@@ -77,8 +80,10 @@ export const Courses = ({
 		return (
 			<div className={style.createCourseWrapper}>
 				<CreateCourse
-					mockedAuthorsList={mockedAuthorsList}
+					authorsList={authorsList}
 					toggleCourseForm={toggleCourseForm}
+					setCoursesList={setCoursesList}
+					setAuthorsList={setAuthorsList}
 				/>
 			</div>
 		);
@@ -93,14 +98,14 @@ export const Courses = ({
 					id={courseInfo.id}
 					duration={getCourseDuration(courseInfo.duration)}
 					creationDate={convertDateToDotFormat(courseInfo.creationDate)}
-					authors={getAuthorsName(courseInfo.authors, mockedAuthorsList)}
+					authors={getAuthorsName(courseInfo.authors, authorsList)}
 					toggleCourseInfo={toggleCourseInfo}
 				/>
 			</div>
 		);
 	}
 
-	if (mockedCoursesList.length && !showCourseInfo && !showCourseForm) {
+	if (coursesList.length && !showCourseInfo && !showCourseForm) {
 		return (
 			<div className={style.coursesListWrapper}>
 				<div className='flex justify-between'>
@@ -112,7 +117,7 @@ export const Courses = ({
 				</div>
 
 				{filteredCourses.map((course: MockedCoursesListInterface) => {
-					const authors = getAuthorsName(course.authors, mockedAuthorsList);
+					const authors = getAuthorsName(course.authors, authorsList);
 					const creationDate = convertDateToDotFormat(course.creationDate);
 					const duration = getCourseDuration(course.duration);
 
@@ -134,7 +139,7 @@ export const Courses = ({
 		);
 	}
 
-	if (!mockedCoursesList.length) {
+	if (!coursesList.length) {
 		return (
 			<div className={style.emptyCourseListWrapper}>
 				<EmptyCourseList />

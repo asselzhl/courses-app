@@ -14,14 +14,18 @@ const style = {
 	section: `border-[#CFCFCF] border bg-white rounded py-10 px-20 flex flex-col gap-y-8 mb-8`,
 };
 
-export const CreateCourse = ({ mockedAuthorsList, toggleCourseForm }) => {
-	const [initialAuthors, setInitialAuthors] = useState(mockedAuthorsList);
+export const CreateCourse = ({
+	authorsList,
+	toggleCourseForm,
+	setCoursesList,
+	setAuthorsList,
+}) => {
 	const [addedAuthors, setAddedAuthors] = useState([]);
-
+	const [renderedAuthors, setRenderedAuthors] = useState(authorsList);
 	const [authorToCreate, setAuthorToCreate] = useState('');
 
 	const initialCourseCreationData = {
-		id: '',
+		id: uuidv4(),
 		title: '',
 		description: '',
 		creationDate: new Date().toLocaleString(),
@@ -40,45 +44,55 @@ export const CreateCourse = ({ mockedAuthorsList, toggleCourseForm }) => {
 	};
 
 	const addAuthorName = (authorID: string) => {
-		const author = initialAuthors.find(
+		const author = authorsList.find(
 			(initialAuthor) => initialAuthor.id === authorID
 		);
 
 		setAddedAuthors([...addedAuthors, author]);
 
 		setCourseCreationData((prevValues) => {
-			return { ...prevValues, authors: addedAuthors };
+			return {
+				...prevValues,
+				authors: [...addedAuthors.map((author) => author.id), author.id],
+			};
 		});
 
-		const deletedAuthors = initialAuthors.filter(
+		const deletedAuthors = renderedAuthors.filter(
 			(author) => author.id !== authorID
 		);
-		setInitialAuthors(deletedAuthors);
+		setRenderedAuthors(deletedAuthors);
 	};
 
 	const deleteAuthorName = (authorID: string) => {
 		const author = addedAuthors.find((author) => author.id === authorID);
 
-		setInitialAuthors([...initialAuthors, author]);
+		setRenderedAuthors([...renderedAuthors, author]);
 
 		const deletedAuthors = addedAuthors.filter(
 			(author) => author.id !== authorID
 		);
 
 		setAddedAuthors(deletedAuthors);
-
 		setCourseCreationData((prevValues) => {
-			return { ...prevValues, authors: deletedAuthors };
+			return {
+				...prevValues,
+				authors: deletedAuthors.map((author) => author.id),
+			};
 		});
 	};
 
 	const createAuthor = () => {
-		mockedAuthorsList.push({
-			id: uuidv4(),
-			name: authorToCreate,
-		});
+		const createdAuthorInfo = { id: uuidv4(), name: authorToCreate };
+		setAuthorsList((prevValues) => [...prevValues, createdAuthorInfo]);
+		setRenderedAuthors((prevValues) => [...prevValues, createdAuthorInfo]);
 		setAuthorToCreate('');
 	};
+
+	const createCourse = () => {
+		setCoursesList((prevValues) => [...prevValues, courseCreationData]);
+		toggleCourseForm();
+	};
+
 	return (
 		<div>
 			<h2 className={style.sectionTitle}>Course edit/create page</h2>
@@ -163,7 +177,7 @@ export const CreateCourse = ({ mockedAuthorsList, toggleCourseForm }) => {
 
 					<div className='flex flex-col gap-y-4'>
 						<h4 className='font-bold'>Authors List</h4>
-						{initialAuthors.map((author) => {
+						{renderedAuthors.map((author) => {
 							return (
 								<AuthorItem
 									key={author.id}
@@ -179,17 +193,11 @@ export const CreateCourse = ({ mockedAuthorsList, toggleCourseForm }) => {
 				<div className='flex gap-x-5 justify-end'>
 					<Button
 						text='cancel'
-						onClick={(e) => {
-							e.preventDefault();
+						onClick={() => {
 							toggleCourseForm();
 						}}
 					/>
-					<Button
-						text='create course'
-						onClick={(e) => {
-							e.preventDefault();
-						}}
-					/>
+					<Button text='create course' onClick={createCourse} />
 				</div>
 			</form>
 		</div>

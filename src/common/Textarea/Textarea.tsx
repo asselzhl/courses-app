@@ -9,7 +9,8 @@ interface TextareaProps {
 	placeholderText: string;
 	name: string;
 	textareaID: string;
-	onChange: () => void;
+	/* eslint-disable */ 
+	onChange: (e?: any) => void;
 }
 
 export const Textarea = ({
