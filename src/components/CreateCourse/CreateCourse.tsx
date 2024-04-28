@@ -9,6 +9,7 @@ import { AuthorItem } from './AuthorItem/AuthorItem';
 import { v4 as v4 } from 'uuid';
 
 import { getCourseDuration } from '../../helpers/getCourseDuration';
+import { validateInputValues } from '../../helpers/validateInputValues';
 
 const style = {
 	sectionTitle: `text-[#333E48] font-bold text-3xl mb-6 capitalize`,
@@ -62,9 +63,8 @@ export const CreateCourse = ({
 	const [newAuthor, setNewAuthor] = useState<string>('');
 
 	const [errorMessages, setErrorMessages] = useState<ErrorMessages>({});
-	const [isValidValues, setIsValidValues] = useState<boolean>(false);
 
-	const initialCourseData: CoursesListItem = {
+	const initialNewCourseData: CoursesListItem = {
 		id: v4(),
 		title: '',
 		description: '',
@@ -73,23 +73,7 @@ export const CreateCourse = ({
 		authors: [],
 	};
 	const [newCourseData, setNewCourseData] =
-		useState<CoursesListItem>(initialCourseData);
-
-	const validateInputValues = (values: CoursesListItem): ErrorMessages => {
-		if (!values.title) {
-			errorMessages.title = 'Title is required';
-		}
-		if (!values.description) {
-			errorMessages.description = 'Description is required';
-		}
-		if (!values.duration) {
-			errorMessages.duration = 'Duration is required';
-		}
-		if (!values.authors.length) {
-			errorMessages.authors = 'Authors list is required';
-		}
-		return errorMessages;
-	};
+		useState<CoursesListItem>(initialNewCourseData);
 
 	const handleNewCourseDataChange = (
 		e: React.ChangeEvent<HTMLInputElement>
@@ -100,9 +84,7 @@ export const CreateCourse = ({
 	};
 
 	const addAuthorName = (authorID: string): void => {
-		const author = authorsList.find(
-			(initialAuthor) => initialAuthor.id === authorID
-		);
+		const author = authorsList.find((author) => author.id === authorID);
 
 		setNewCourseAuthors([...newCourseAuthors, author]);
 
@@ -113,10 +95,10 @@ export const CreateCourse = ({
 			};
 		});
 
-		const deletedAuthors = availableAuthors.filter(
+		const removedAuthors = availableAuthors.filter(
 			(author) => author.id !== authorID
 		);
-		setAvailableAuthors(deletedAuthors);
+		setAvailableAuthors(removedAuthors);
 	};
 
 	const deleteAuthorName = (authorID: string): void => {
@@ -124,21 +106,21 @@ export const CreateCourse = ({
 
 		setAvailableAuthors([...availableAuthors, author]);
 
-		const deletedAuthors = newCourseAuthors.filter(
+		const removedAuthors = newCourseAuthors.filter(
 			(author) => author.id !== authorID
 		);
 
-		setNewCourseAuthors(deletedAuthors);
+		setNewCourseAuthors(removedAuthors);
 		setNewCourseData((prevValues) => {
 			return {
 				...prevValues,
-				authors: deletedAuthors.map((author) => author.id),
+				authors: removedAuthors.map((author) => author.id),
 			};
 		});
 	};
 
 	const createNewAuthor = (): void => {
-		const createdAuthorInfo: AuthorsListItem = { id: v4(), name: newAuthor };
+		const createdAuthorInfo = { id: v4(), name: newAuthor };
 		setAuthorsList((prevValues) => [...prevValues, createdAuthorInfo]);
 		setAvailableAuthors((prevValues) => [...prevValues, createdAuthorInfo]);
 		setNewAuthor('');
@@ -147,11 +129,12 @@ export const CreateCourse = ({
 	const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		setErrorMessages(validateInputValues(newCourseData));
+		const errors = validateInputValues(newCourseData, {});
 
-		setIsValidValues(true);
+		setErrorMessages(errors);
+		setIsValidValues(Object.keys(errors).length === 0);
 
-		if (isValidValues && Object.keys(errorMessages).length === 0) {
+		if (Object.keys(errors).length === 0) {
 			setCoursesList((prevValues) => [...prevValues, newCourseData]);
 			toggleCourseForm();
 		}
