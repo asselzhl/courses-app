@@ -1,19 +1,4 @@
-interface CoursesListItem {
-	id: string;
-	title: string;
-	description: string;
-	creationDate: string;
-	duration: number;
-	authors: string[];
-}
-interface ErrorMessages {
-	[key: string]: string;
-}
-
-export function validateInputValues(
-	values: CoursesListItem,
-	errorMessages: ErrorMessages
-): ErrorMessages {
+export function validateInputValues(values, errorMessages) {
 	for (const field in values) {
 		const fieldName = field[0].toUpperCase() + field.slice(1);
 
