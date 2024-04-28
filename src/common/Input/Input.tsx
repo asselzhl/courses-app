@@ -9,7 +9,7 @@ interface InputProps {
 	labelText: string;
 	placeholderText: string;
 	name: string;
-	value: string;
+	value: string | number;
 	inputID: string;
 	/* eslint-disable */ 
 	onChange: (e?: any) => void;
