@@ -47,7 +47,8 @@ export const Courses = ({
 	const [showCourseForm, setShowCourseForm] = useState<boolean>(false);
 
 	const [coursesList, setCoursesList] = useState(mockedCoursesList);
-	const [authorsList, setAuthorsList] = useState<MockedAuthorsListInterface[]>(mockedAuthorsList);
+	const [authorsList, setAuthorsList] =
+		useState<MockedAuthorsListInterface[]>(mockedAuthorsList);
 
 	const [searchValue, setSearchValue] = useState('');
 
