@@ -132,7 +132,6 @@ export const CreateCourse = ({
 		const errors = validateInputValues(newCourseData, {});
 
 		setErrorMessages(errors);
-		setIsValidValues(Object.keys(errors).length === 0);
 
 		if (Object.keys(errors).length === 0) {
 			setCoursesList((prevValues) => [...prevValues, newCourseData]);
