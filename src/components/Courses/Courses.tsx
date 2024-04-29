@@ -6,8 +6,6 @@ import { CourseInfo } from '../CourseInfo/CourseInfo';
 import { CreateCourse } from '../CreateCourse/CreateCourse';
 import { SearchBar } from './components/SearchBar/SearchBar';
 import { Button } from '../../common/Button/Button';
-import { Login } from '../Login/Login';
-import { Registration } from '../Registration/Registration';
 
 import { convertDateToDotFormat } from '../../helpers/convertDateToDotFormat';
 import { getCourseDuration } from '../../helpers/getCourseDuration';
@@ -18,7 +16,6 @@ const style = {
 	emptyCourseListWrapper: `bg-[#F7F7F7] h-[90vh] py-20 px-40 flex flex-col gap-y-8 justify-center items-center`,
 	courseInfoWrapper: `bg-[#F7F7F7] h-screen py-20 px-40 flex flex-col gap-y-8`,
 	createCourseWrapper: `bg-[#F7F7F7] h-full py-20 px-40 flex flex-col`,
-	loginFormWrapper: `bg-[#F7F7F7] h-screen py-20 flex justify-center`,
 };
 
 interface MockedCoursesListInterface {
@@ -37,8 +34,6 @@ interface MockedAuthorsListInterface {
 interface CoursesProps {
 	mockedCoursesList: MockedCoursesListInterface[];
 	mockedAuthorsList: MockedAuthorsListInterface[];
-	showLoginForm: boolean;
-	setShowLoginForm;
 }
 
 type courseInfoType = MockedCoursesListInterface | null;
@@ -46,15 +41,10 @@ type courseInfoType = MockedCoursesListInterface | null;
 export const Courses = ({
 	mockedCoursesList,
 	mockedAuthorsList,
-	showLoginForm,
-	setShowLoginForm,
 }: CoursesProps) => {
 	const [showCourseInfo, setShowCourseInfo] = useState<boolean>(false);
 	const [courseInfo, setCourseInfo] = useState<courseInfoType>(null);
 	const [showCourseForm, setShowCourseForm] = useState<boolean>(false);
-
-	const [showRegistrationForm, setShowRegistrationForm] =
-		useState<boolean>(false);
 
 	const [coursesList, setCoursesList] = useState(mockedCoursesList);
 	const [authorsList, setAuthorsList] =
@@ -92,24 +82,8 @@ export const Courses = ({
 			<div className={style.createCourseWrapper}>
 				<CreateCourse
 					authorsList={authorsList}
-					toggleCourseForm={toggleCourseForm}
 					setCoursesList={setCoursesList}
 					setAuthorsList={setAuthorsList}
-				/>
-			</div>
-		);
-	}
-	if (showRegistrationForm) {
-		<div className={style.loginFormWrapper}>
-			<Registration />
-		</div>;
-	}
-	if (showLoginForm) {
-		return (
-			<div className={style.loginFormWrapper}>
-				<Login
-					setShowRegistrationForm={setShowRegistrationForm}
-					setShowLoginForm={setShowLoginForm}
 				/>
 			</div>
 		);
@@ -131,12 +105,7 @@ export const Courses = ({
 		);
 	}
 
-	if (
-		coursesList.length &&
-		!showCourseInfo &&
-		!showCourseForm &&
-		!showLoginForm
-	) {
+	if (coursesList.length && !showCourseInfo && !showCourseForm) {
 		return (
 			<div className={style.coursesListWrapper}>
 				<div className='flex justify-between'>

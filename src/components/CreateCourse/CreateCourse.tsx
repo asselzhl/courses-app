@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import { Input } from '../../common/Input/Input';
 import { Button } from '../../common/Button/Button';
@@ -40,7 +41,6 @@ interface AuthorsListItem {
 
 interface CreateCourseProps {
 	authorsList: AuthorsListItem[];
-	toggleCourseForm: () => void;
 	setCoursesList: (
 		callback: (prevValues: CoursesListItem[]) => CoursesListItem[]
 	) => void;
@@ -51,7 +51,6 @@ interface CreateCourseProps {
 
 export const CreateCourse = ({
 	authorsList,
-	toggleCourseForm,
 	setCoursesList,
 	setAuthorsList,
 }: CreateCourseProps) => {
@@ -135,7 +134,6 @@ export const CreateCourse = ({
 
 		if (Object.keys(errors).length === 0) {
 			setCoursesList((prevValues) => [...prevValues, newCourseData]);
-			toggleCourseForm();
 		}
 	};
 
@@ -251,12 +249,9 @@ export const CreateCourse = ({
 				</div>
 
 				<div className='flex gap-x-5 justify-end'>
-					<Button
-						text='cancel'
-						onClick={() => {
-							toggleCourseForm();
-						}}
-					/>
+					<Link to='/'>
+						<Button text='cancel' onClick={() => {}} />
+					</Link>
 					<Button type='submit' text='create course' onClick={() => {}} />
 				</div>
 			</form>
