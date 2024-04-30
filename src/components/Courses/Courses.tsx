@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import { CourseCard } from './components/CourseCard/CourseCard';
 import { EmptyCourseList } from '../EmptyCourseList/EmptyCourseList';
-import { CourseInfo } from '../CourseInfo/CourseInfo';
-import { CreateCourse } from '../CreateCourse/CreateCourse';
+// import { CourseInfo } from '../CourseInfo/CourseInfo';
+// import { CreateCourse } from '../CreateCourse/CreateCourse';
 import { SearchBar } from './components/SearchBar/SearchBar';
 import { Button } from '../../common/Button/Button';
 
 import { convertDateToDotFormat } from '../../helpers/convertDateToDotFormat';
 import { getCourseDuration } from '../../helpers/getCourseDuration';
 import { getAuthorsName } from '../../helpers/getAuthorsName';
+import { Header } from '../Header/Header';
 
 const style = {
 	coursesListWrapper: `bg-[#F7F7F7] h-full py-20 px-40 flex flex-col gap-y-8`,
@@ -18,37 +20,11 @@ const style = {
 	createCourseWrapper: `bg-[#F7F7F7] h-full py-20 px-40 flex flex-col`,
 };
 
-interface MockedCoursesListInterface {
-	id: string;
-	title: string;
-	description: string;
-	creationDate: string;
-	duration: number;
-	authors: string[];
-}
-
-interface MockedAuthorsListInterface {
-	id: string;
-	name: string;
-}
-interface CoursesProps {
-	mockedCoursesList: MockedCoursesListInterface[];
-	mockedAuthorsList: MockedAuthorsListInterface[];
-}
-
-type courseInfoType = MockedCoursesListInterface | null;
-
-export const Courses = ({
-	mockedCoursesList,
-	mockedAuthorsList,
-}: CoursesProps) => {
-	const [showCourseInfo, setShowCourseInfo] = useState<boolean>(false);
-	const [courseInfo, setCourseInfo] = useState<courseInfoType>(null);
-	const [showCourseForm, setShowCourseForm] = useState<boolean>(false);
-
+export const Courses = ({ mockedCoursesList, mockedAuthorsList }) => {
+	/* eslint-disable-next-line */
 	const [coursesList, setCoursesList] = useState(mockedCoursesList);
-	const [authorsList, setAuthorsList] =
-		useState<MockedAuthorsListInterface[]>(mockedAuthorsList);
+	/* eslint-disable-next-line */
+	const [authorsList, setAuthorsList] = useState(mockedAuthorsList);
 
 	const [searchValue, setSearchValue] = useState('');
 
@@ -62,88 +38,71 @@ export const Courses = ({
 		setSearchValue(e.target.value);
 	};
 
-	const toggleCourseInfo = () => {
-		setShowCourseInfo(!showCourseInfo);
-	};
+	//   const getCourseInfo = function (courseID: string) {
+	//     const info = coursesList.find(
+	//       (course: MockedCoursesListInterface) => course.id === courseID
+	//     );
+	//     setCourseInfo(info);
+	//   };
 
-	const toggleCourseForm = () => {
-		setShowCourseForm(!showCourseForm);
-	};
+	//   if (showCourseInfo && courseInfo) {
+	//     return (
+	//       <div className={style.courseInfoWrapper}>
+	//         <CourseInfo
+	//           courseName={courseInfo.title}
+	//           description={courseInfo.description}
+	//           id={courseInfo.id}
+	//           duration={getCourseDuration(courseInfo.duration)}
+	//           creationDate={convertDateToDotFormat(courseInfo.creationDate)}
+	//           authors={getAuthorsName(courseInfo.authors, authorsList)}
+	//         />
+	//       </div>
+	//     );
+	//   }
 
-	const getCourseInfo = function (courseID: string) {
-		const info = coursesList.find(
-			(course: MockedCoursesListInterface) => course.id === courseID
-		);
-		setCourseInfo(info);
-	};
-
-	if (showCourseForm) {
+	if (coursesList.length) {
 		return (
-			<div className={style.createCourseWrapper}>
-				<CreateCourse
-					authorsList={authorsList}
-					setCoursesList={setCoursesList}
-					setAuthorsList={setAuthorsList}
-				/>
-			</div>
-		);
-	}
-
-	if (showCourseInfo && courseInfo) {
-		return (
-			<div className={style.courseInfoWrapper}>
-				<CourseInfo
-					courseName={courseInfo.title}
-					description={courseInfo.description}
-					id={courseInfo.id}
-					duration={getCourseDuration(courseInfo.duration)}
-					creationDate={convertDateToDotFormat(courseInfo.creationDate)}
-					authors={getAuthorsName(courseInfo.authors, authorsList)}
-					toggleCourseInfo={toggleCourseInfo}
-				/>
-			</div>
-		);
-	}
-
-	if (coursesList.length && !showCourseInfo && !showCourseForm) {
-		return (
-			<div className={style.coursesListWrapper}>
-				<div className='flex justify-between'>
-					<SearchBar
-						searchValue={searchValue}
-						handleSearchInputChange={handleSearchInputChange}
-					/>
-					<Button text='Add new course' onClick={toggleCourseForm} />
-				</div>
-
-				{filteredCourses.map((course: MockedCoursesListInterface) => {
-					const authors = getAuthorsName(course.authors, authorsList);
-					const creationDate = convertDateToDotFormat(course.creationDate);
-					const duration = getCourseDuration(course.duration);
-
-					return (
-						<CourseCard
-							key={course.id}
-							id={course.id}
-							courseName={course.title}
-							duration={duration}
-							creationDate={creationDate}
-							description={course.description}
-							authors={authors}
-							toggleCourseInfo={toggleCourseInfo}
-							getCourseInfo={getCourseInfo}
+			<>
+				<Header />
+				<div className={style.coursesListWrapper}>
+					<div className='flex justify-between'>
+						<SearchBar
+							searchValue={searchValue}
+							handleSearchInputChange={handleSearchInputChange}
 						/>
-					);
-				})}
-			</div>
+						<Link to='/courses/add'>
+							<Button text='Add new course' onClick={() => {}} />
+						</Link>
+					</div>
+
+					{filteredCourses.map((course) => {
+						const authors = getAuthorsName(course.authors, authorsList);
+						const creationDate = convertDateToDotFormat(course.creationDate);
+						const duration = getCourseDuration(course.duration);
+
+						return (
+							<CourseCard
+								key={course.id}
+								id={course.id}
+								courseName={course.title}
+								duration={duration}
+								creationDate={creationDate}
+								description={course.description}
+								authors={authors}
+							/>
+						);
+					})}
+				</div>
+			</>
 		);
 	}
 
-	if (!coursesList.length) {
-		return (
+	return (
+		<>
+			<Header />
 			<div className={style.emptyCourseListWrapper}>
 				<EmptyCourseList />
 			</div>
-		);
-	}
+		</>
+	);
 };

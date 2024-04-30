@@ -13,7 +13,7 @@ export const createRequest = async (endpoint, method, data) => {
 	try {
 		const response = await fetch(endpoint, requestOptions);
 		const result = await response.json();
-		console.log(result);
+
 		return result;
 	} catch (error) {
 		console.error('Error occurred while making the request:', error);

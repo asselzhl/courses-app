@@ -7,6 +7,7 @@ import { ErrorMessage } from '../../common/ErrorMessage/ErrorMessage';
 
 import { validateInputValues } from '../../helpers/validateInputValues';
 import { createRequest } from '../../helpers/apiServices';
+import { Header } from '../Header/Header';
 
 const style = {
 	blockTitle: `text-[#333E48] font-bold text-3xl mb-6`,
@@ -50,54 +51,57 @@ export const Registration = () => {
 		}
 	};
 	return (
-		<div className={style.registrationFormWrapper}>
-			<h2 className={style.blockTitle}>Registration</h2>
+		<>
+			<Header />
+			<div className={style.registrationFormWrapper}>
+				<h2 className={style.blockTitle}>Registration</h2>
 
-			<form onSubmit={handleFormSubmit} className={style.formContainer}>
-				<div>
-					<Input
-						type='text'
-						labelText='Name'
-						placeholderText='Name'
-						value={newUserData.name}
-						name='name'
-						inputID='name'
-						onChange={handleNewUserDataChange}
-					/>
-					<ErrorMessage errorMessages={errorMessages} inputField='name' />
-				</div>
-				<div>
-					<Input
-						type='email'
-						labelText='Email'
-						placeholderText='Email'
-						value={newUserData.email}
-						name='email'
-						inputID='email'
-						onChange={handleNewUserDataChange}
-					/>
-					<ErrorMessage errorMessages={errorMessages} inputField='email' />
-				</div>
-				<div>
-					<Input
-						type='password'
-						labelText='Password'
-						placeholderText='Password'
-						value={newUserData.password}
-						name='password'
-						inputID='password'
-						onChange={handleNewUserDataChange}
-					/>
-					<ErrorMessage errorMessages={errorMessages} inputField='password' />
-				</div>
-				<Button text='login' type='submit' onClick={() => {}} />
-				<div className='text-center'>
-					<span>If you have an account you may </span>
-					<Link className='font-bold' to='/login'>
-						Login
-					</Link>
-				</div>
-			</form>
-		</div>
+				<form onSubmit={handleFormSubmit} className={style.formContainer}>
+					<div>
+						<Input
+							type='text'
+							labelText='Name'
+							placeholderText='Name'
+							value={newUserData.name}
+							name='name'
+							inputID='name'
+							onChange={handleNewUserDataChange}
+						/>
+						<ErrorMessage errorMessages={errorMessages} inputField='name' />
+					</div>
+					<div>
+						<Input
+							type='email'
+							labelText='Email'
+							placeholderText='Email'
+							value={newUserData.email}
+							name='email'
+							inputID='email'
+							onChange={handleNewUserDataChange}
+						/>
+						<ErrorMessage errorMessages={errorMessages} inputField='email' />
+					</div>
+					<div>
+						<Input
+							type='password'
+							labelText='Password'
+							placeholderText='Password'
+							value={newUserData.password}
+							name='password'
+							inputID='password'
+							onChange={handleNewUserDataChange}
+						/>
+						<ErrorMessage errorMessages={errorMessages} inputField='password' />
+					</div>
+					<Button text='login' type='submit' onClick={() => {}} />
+					<div className='text-center'>
+						<span>If you have an account you may </span>
+						<Link className='font-bold' to='/login'>
+							Login
+						</Link>
+					</div>
+				</form>
+			</div>
+		</>
 	);
 };

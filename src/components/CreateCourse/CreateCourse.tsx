@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { Input } from '../../common/Input/Input';
 import { Button } from '../../common/Button/Button';
@@ -54,6 +54,7 @@ export const CreateCourse = ({
 	setCoursesList,
 	setAuthorsList,
 }: CreateCourseProps) => {
+	const navigate = useNavigate();
 	const [newCourseAuthors, setNewCourseAuthors] = useState<AuthorsListItem[]>(
 		[]
 	);
@@ -134,6 +135,7 @@ export const CreateCourse = ({
 
 		if (Object.keys(errors).length === 0) {
 			setCoursesList((prevValues) => [...prevValues, newCourseData]);
+			navigate('/courses');
 		}
 	};
 
@@ -249,7 +251,7 @@ export const CreateCourse = ({
 				</div>
 
 				<div className='flex gap-x-5 justify-end'>
-					<Link to='/'>
+					<Link to='/courses'>
 						<Button text='cancel' onClick={() => {}} />
 					</Link>
 					<Button type='submit' text='create course' onClick={() => {}} />

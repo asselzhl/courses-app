@@ -15,24 +15,22 @@ interface CourseCardProps {
 	creationDate: string;
 	description: string;
 	authors: string;
-	toggleCourseInfo: () => void;
-	getCourseInfo: (id: string) => void;
 }
 
+ 
 export const CourseCard = ({
+	/* eslint-disable-next-line */
 	id,
 	courseName,
 	duration,
 	creationDate,
 	description,
 	authors,
-	toggleCourseInfo,
-	getCourseInfo,
 }: CourseCardProps) => {
-	function showCourse() {
-		toggleCourseInfo();
-		getCourseInfo(id);
-	}
+	// function showCourse() {
+	// 	toggleCourseInfo();
+	// 	getCourseInfo(id);
+	// }
 
 	const config = [
 		{ title: 'Authors: ', value: authors },
@@ -58,7 +56,7 @@ export const CourseCard = ({
 						))}
 					</div>
 					<div>
-						<Button text='show course' onClick={showCourse} />
+						<Button text='show course' onClick={() => {}} />
 					</div>
 				</div>
 			</div>
