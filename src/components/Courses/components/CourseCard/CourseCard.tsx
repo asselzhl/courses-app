@@ -17,7 +17,6 @@ interface CourseCardProps {
 	authors: string;
 }
 
- 
 export const CourseCard = ({
 	/* eslint-disable-next-line */
 	id,
