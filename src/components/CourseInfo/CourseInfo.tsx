@@ -3,10 +3,9 @@ import React from 'react';
 import { Button } from '../../common/Button/Button';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { convertDateToDotFormat } from "../../helpers/convertDateToDotFormat";
-import { getCourseDuration } from "../../helpers/getCourseDuration";
-import { getAuthorsName } from "../../helpers/getAuthorsName";
-
+import { convertDateToDotFormat } from '../../helpers/convertDateToDotFormat';
+import { getCourseDuration } from '../../helpers/getCourseDuration';
+import { getAuthorsName } from '../../helpers/getAuthorsName';
 
 const style = {
 	title: `text-[#333E48] font-bold text-3xl mb-6`,
@@ -29,14 +28,11 @@ const style = {
 // 	toggleCourseInfo?: () => void;
 // }
 
-export const CourseInfo = ({
-	authorsList,
-	coursesList
-}) => {
+export const CourseInfo = ({ authorsList, coursesList }) => {
 	const { courseId } = useParams();
 	const navigate = useNavigate();
 
-	const course = coursesList.find(course => course.id === courseId);
+	const course = coursesList.find((course) => course.id === courseId);
 	const courseDuration = getCourseDuration(course.duration);
 	const courseCreationDate = convertDateToDotFormat(course.creationDate);
 	const courseAuthors = getAuthorsName(course.authors, authorsList);

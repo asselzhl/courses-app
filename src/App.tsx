@@ -1,10 +1,9 @@
 import { Login } from './components/Login/Login';
 
 export function App() {
-	
 	return (
 		<>
-		<Login />
+			<Login />
 			{/* {localStorage.getItem('userToken') ? (
 				<Courses />
 			) : (

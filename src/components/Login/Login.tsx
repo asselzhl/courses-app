@@ -8,7 +8,6 @@ import { ErrorMessage } from '../../common/ErrorMessage/ErrorMessage';
 import { validateInputValues } from '../../helpers/validateInputValues';
 import { createRequest } from '../../helpers/apiServices';
 
-
 const style = {
 	blockTitle: `text-[#333E48] font-bold text-3xl mb-6`,
 	formContainer: `border-[#CFCFCF] border bg-white rounded w-[600px] py-20 px-36 flex flex-col gap-y-8`,
@@ -57,7 +56,6 @@ export const Login = () => {
 	};
 	return (
 		<>
-			
 			<div className={style.loginFormWrapper}>
 				<h2 className={style.blockTitle}>Login</h2>
 
