@@ -7,7 +7,7 @@ import { ErrorMessage } from '../../common/ErrorMessage/ErrorMessage';
 
 import { validateInputValues } from '../../helpers/validateInputValues';
 import { createRequest } from '../../helpers/apiServices';
-import { Header } from '../Header/Header';
+
 
 const style = {
 	blockTitle: `text-[#333E48] font-bold text-3xl mb-6`,
@@ -57,7 +57,7 @@ export const Login = () => {
 	};
 	return (
 		<>
-			<Header />
+			
 			<div className={style.loginFormWrapper}>
 				<h2 className={style.blockTitle}>Login</h2>
 

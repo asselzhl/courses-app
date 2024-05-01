@@ -20,6 +20,7 @@ const style = {
 	durationContainer: `flex items-center gap-x-4`,
 	availableAuthorsTitle: `text-2xl font-bold mb-6`,
 	newCourseAuthorsContainer: `max-w-[20%] flex flex-col gap-y-4 text-center`,
+	createCourseWrapper: `bg-[#F7F7F7] h-full py-20 px-40 flex flex-col`,
 };
 
 interface ErrorMessages {
@@ -135,12 +136,12 @@ export const CreateCourse = ({
 
 		if (Object.keys(errors).length === 0) {
 			setCoursesList((prevValues) => [...prevValues, newCourseData]);
-			navigate('/courses');
+			navigate(-1);
 		}
 	};
 
 	return (
-		<>
+		<div className={style.createCourseWrapper}>
 			<h2 className={style.sectionTitle}>Course edit/create page</h2>
 
 			<form onSubmit={handleFormSubmit} action=''>
@@ -257,6 +258,6 @@ export const CreateCourse = ({
 					<Button type='submit' text='create course' onClick={() => {}} />
 				</div>
 			</form>
-		</>
+		</div>
 	);
 };
