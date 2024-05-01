@@ -13,7 +13,7 @@ export const Header = () => {
 	const navigate = useNavigate();
 
 	const handleButtonClick = () => {
-		localStorage.removeItem('userToken');
+		localStorage.clear();
 		navigate('/login');
 	};
 
@@ -21,7 +21,7 @@ export const Header = () => {
 		<header className={style.header}>
 			<Logo />
 			<div className={style.content}>
-				<p>Assel</p>
+				<p>{localStorage.getItem('username')}</p>
 				<Link to='/login'>
 					<Button
 						text={localStorage.getItem('userToken') ? 'logout' : 'login'}

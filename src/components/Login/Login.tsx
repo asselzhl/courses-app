@@ -47,6 +47,7 @@ export const Login = () => {
 				(response) => {
 					if (response.successful) {
 						localStorage.setItem('userToken', response.result);
+						localStorage.setItem('username', response.user.name);
 						navigate('/courses');
 						setUserData(initialUserData);
 					}
