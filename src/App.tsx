@@ -27,18 +27,21 @@ export function App() {
 		useState<AuthorsListItem[]>(mockedAuthorsList);
 	const [coursesList, setCoursesList] =
 		useState<CoursesListItem[]>(mockedCoursesList);
-	//   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+
+	const isUserTokenPresent = !!localStorage.getItem('userToken');
+
+	const [isLoggedIn, setIsLoggedIn] = useState<boolean>(isUserTokenPresent);
 
 	const routesConfig = [
 		{
 			path: '/',
-			element: localStorage.getItem('userToken') ? (
+			element: isUserTokenPresent ? (
 				<Courses authorsList={authorsList} coursesList={coursesList} />
 			) : (
-				<Login />
+				<Login setIsLoggedIn={setIsLoggedIn} />
 			),
 		},
-		{ path: 'login', element: <Login /> },
+		{ path: 'login', element: <Login setIsLoggedIn={setIsLoggedIn} /> },
 		{ path: 'registration', element: <Registration /> },
 		{
 			path: 'courses',
@@ -64,7 +67,11 @@ export function App() {
 
 	return (
 		<Routes>
-			<Route element={<Layout />}>
+			<Route
+				element={
+					<Layout isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+				}
+			>
 				{routesConfig.map((route) => {
 					return (
 						<Route key={route.path} path={route.path} element={route.element} />

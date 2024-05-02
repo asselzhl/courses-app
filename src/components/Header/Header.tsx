@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { Logo } from './components/Logo/Logo';
 import { Button } from '../../common/Button/Button';
@@ -9,30 +9,22 @@ const style = {
 	content: `flex items-center gap-x-3 font-bold`,
 };
 /* eslint-disable */
-export const Header = ({  }) => {
-	const navigate = useNavigate();
+export const Header = ({ isLoggedIn, setIsLoggedIn }) => {
+  const navigate = useNavigate();
 
-	const handleButtonClick = () => {
-		localStorage.clear();
-		navigate('/login');
-	};
+  const handleButtonClick = () => {
+    localStorage.clear();
+    setIsLoggedIn(false);
+    navigate("/login");
+  };
 
-	return (
-		<header className={style.header}>
-			<Logo />
-			<div className={style.content}>
-				<p>
-					{localStorage.getItem('username')
-						? localStorage.getItem('username')
-						: null}
-				</p>
-				<Link to='/login'>
-					<Button
-						text={localStorage.getItem('username') ? 'logout' : 'login'}
-						onClick={handleButtonClick}
-					/>
-				</Link>
-			</div>
-		</header>
-	);
+  return (
+    <header className={style.header}>
+      <Logo />
+      <div className={style.content}>
+        <p>{isLoggedIn && localStorage.getItem("username")}</p>
+        {isLoggedIn && <Button text="logout" onClick={handleButtonClick} />}
+      </div>
+    </header>
+  );
 };

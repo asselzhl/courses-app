@@ -17,7 +17,7 @@ interface ErrorMessages {
 	[key: string]: string;
 }
 
-export const Login = () => {
+export const Login = ({ setIsLoggedIn }) => {
 	const navigate = useNavigate();
 
 	const [errorMessages, setErrorMessages] = useState<ErrorMessages>({});
@@ -47,6 +47,7 @@ export const Login = () => {
 					if (response.successful) {
 						localStorage.setItem('userToken', response.result);
 						localStorage.setItem('username', response.user.name);
+						setIsLoggedIn(true);
 
 						navigate('/courses');
 						setUserData(initialUserData);
