@@ -1,10 +1,14 @@
 interface RequestOptions {
 	method: string;
-	headers: {[key: string]: string};
+	headers: { [key: string]: string };
 	body?: string;
 }
 
-export const createRequest = async (endpoint: string, method: string, data: Object) => {
+export const createRequest = async (
+	endpoint: string,
+	method: string,
+	data: object
+) => {
 	const requestOptions: RequestOptions = {
 		method: method,
 		headers: {

@@ -1,21 +1,19 @@
-import React from "react";
-import { ErrorMessage } from "../ErrorMessage/ErrorMessage";
-
-
+import React from 'react';
+import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
 
 const style = {
-  pageInput: `py-3 px-4 leading-6 rounded border border-[#CFCFCF] focus:outline-[#007298] w-full`,
+	pageInput: `py-3 px-4 leading-6 rounded border border-[#CFCFCF] focus:outline-[#007298] w-full`,
 };
 
 interface InputProps {
-  type: string;
-  labelText: string;
-  placeholderText: string;
-  name: string;
-  value: string | number;
-  inputID: string;
-  errorMessage?: string;
-  /* eslint-disable */
+	type: string;
+	labelText: string;
+	placeholderText: string;
+	name: string;
+	value: string | number;
+	inputID: string;
+	errorMessage?: string;
+	/* eslint-disable */
   onChange: (e?: any) => void;
 }
 

@@ -1,13 +1,13 @@
-import React from "react";
+import React from 'react';
 
 interface ErrorMessageProps {
-  errorMessage: string;
+	errorMessage: string;
 }
 
 export const ErrorMessage = ({ errorMessage }: ErrorMessageProps) => {
-  return (
-    <>
-      {errorMessage && <span className="text-[#FF0000]">{errorMessage}</span>}
-    </>
-  );
+	return (
+		<>
+			{errorMessage && <span className='text-[#FF0000]'>{errorMessage}</span>}
+		</>
+	);
 };
