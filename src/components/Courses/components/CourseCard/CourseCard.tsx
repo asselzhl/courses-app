@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '../../../../common/Button/Button';
 
 const style = {
-	courseCardWrapper: `p-8 bg-[#FFFFFF] rounded border-l-8 border-[#333E48] shadow-lg shadow-slate-300`,
+	courseCardWrapper: `p-8 bg-[#FFFFFF] rounded border-l-8 border-[#333E48] shadow-lg shadow-slate-300 mb-8`,
 	courseName: `text-xl font-bold leading-8 mb-2.5`,
 	courseDesc: `w-[60%]`,
 };
@@ -33,7 +33,7 @@ export const CourseCard = ({
 	];
 
 	return (
-		<div className={style.courseCardWrapper}>
+		<li className={style.courseCardWrapper}>
 			<h3 className={style.courseName}>{courseName}</h3>
 			<div className='flex gap-x-12'>
 				<div className={style.courseDesc}>
@@ -56,6 +56,6 @@ export const CourseCard = ({
 					</div>
 				</div>
 			</div>
-		</div>
+		</li>
 	);
 };

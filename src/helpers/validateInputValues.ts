@@ -1,4 +1,8 @@
-export function validateInputValues(values, errorMessages) {
+interface ErrorMessages {
+	[key: string]: string;
+}
+
+export function validateInputValues(values: Object, errorMessages: ErrorMessages) {
 	for (const field in values) {
 		const fieldName = field[0].toUpperCase() + field.slice(1);
 

@@ -1,5 +1,11 @@
-export const createRequest = async (endpoint, method, data) => {
-	const requestOptions = {
+interface RequestOptions {
+	method: string;
+	headers: {[key: string]: string};
+	body?: string;
+}
+
+export const createRequest = async (endpoint: string, method: string, data: Object) => {
+	const requestOptions: RequestOptions = {
 		method: method,
 		headers: {
 			'Content-Type': 'application/json',
