@@ -9,7 +9,7 @@ const style = {
 	content: `flex items-center gap-x-3 font-bold`,
 };
 /* eslint-disable */
-export const Header = ({ isLoggedIn }) => {
+export const Header = ({  }) => {
 	const navigate = useNavigate();
 
 	const handleButtonClick = () => {

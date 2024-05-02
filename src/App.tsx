@@ -9,8 +9,6 @@ import { CreateCourse } from './components/CreateCourse/CreateCourse.tsx';
 import { CourseInfo } from './components/CourseInfo/CourseInfo.tsx';
 import { Layout } from './Layout';
 
-import { v4 } from 'uuid';
-
 interface AuthorsListItem {
 	id: string;
 	name: string;
@@ -29,10 +27,18 @@ export function App() {
 		useState<AuthorsListItem[]>(mockedAuthorsList);
 	const [coursesList, setCoursesList] =
 		useState<CoursesListItem[]>(mockedCoursesList);
-	const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+	//   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
 	const routesConfig = [
-		{ path: 'login', element: <Login setIsLoggedIn={setIsLoggedIn} /> },
+		{
+			path: '/',
+			element: localStorage.getItem('userToken') ? (
+				<Courses authorsList={authorsList} coursesList={coursesList} />
+			) : (
+				<Login />
+			),
+		},
+		{ path: 'login', element: <Login /> },
 		{ path: 'registration', element: <Registration /> },
 		{
 			path: 'courses',
@@ -58,9 +64,11 @@ export function App() {
 
 	return (
 		<Routes>
-			<Route path='/' element={<Layout isLoggedIn={isLoggedIn} />}>
+			<Route element={<Layout />}>
 				{routesConfig.map((route) => {
-					return <Route key={v4()} path={route.path} element={route.element} />;
+					return (
+						<Route key={route.path} path={route.path} element={route.element} />
+					);
 				})}
 			</Route>
 		</Routes>
