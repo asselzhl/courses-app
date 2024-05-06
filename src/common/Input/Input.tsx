@@ -8,27 +8,34 @@ interface InputProps {
 	type: string;
 	labelText: string;
 	placeholderText: string;
+	name: string;
+	value: string | number;
 	inputID: string;
-	onChange: () => void;
+	/* eslint-disable */ 
+	onChange: (e?: any) => void;
 }
 
 export const Input = ({
 	type,
 	labelText,
 	placeholderText,
+	name,
+	value,
 	inputID,
 	onChange,
 }: InputProps) => {
 	return (
-		<>
-			{labelText && <label htmlFor={inputID}>{labelText}</label>}
+		<label htmlFor={inputID} className='font-bold capitalize'>
+			{labelText}
 			<input
 				type={type}
 				id={inputID}
 				placeholder={placeholderText}
+				name={name}
+				value={value}
 				className={style.pageInput}
 				onChange={onChange}
 			/>
-		</>
+		</label>
 	);
 };
