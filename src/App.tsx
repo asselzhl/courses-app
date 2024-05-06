@@ -1,7 +1,16 @@
-import './App.css';
+import { Header } from './components/Header/Header';
+import { Courses } from './components/Courses/Courses';
 
-function App() {
-	return <div>Hello world!</div>;
+import { mockedCoursesList, mockedAuthorsList } from './constants';
+
+export function App() {
+	return (
+		<>
+			<Header />
+			<Courses
+				mockedCoursesList={mockedCoursesList}
+				mockedAuthorsList={mockedAuthorsList}
+			/>
+		</>
+	);
 }
-
-export default App;
