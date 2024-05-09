@@ -7,7 +7,7 @@ interface RequestOptions {
 export const createRequest = async (
 	endpoint: string,
 	method: string,
-	data: object
+	data?: object
 ) => {
 	const requestOptions: RequestOptions = {
 		method: method,
@@ -26,6 +26,6 @@ export const createRequest = async (
 
 		return result;
 	} catch (error) {
-		console.error('Error occurred while making the request:', error);
+		console.error(error);
 	}
 };

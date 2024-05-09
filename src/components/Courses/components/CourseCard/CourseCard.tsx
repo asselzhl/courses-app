@@ -32,6 +32,10 @@ export const CourseCard = ({
 		{ title: 'Created: ', value: creationDate },
 	];
 
+	// const handleDeleteButton = () => {
+	//   dispatch(removeCourse());
+	// };
+
 	return (
 		<li className={style.courseCardWrapper}>
 			<h3 className={style.courseName}>{courseName}</h3>
@@ -49,10 +53,12 @@ export const CourseCard = ({
 							</p>
 						))}
 					</div>
-					<div>
+					<div className='flex gap-3 items-center flex-wrap'>
 						<Link to={id}>
 							<Button text='show course' onClick={() => {}} />
 						</Link>
+						<Button text='delete' onClick={() => {}} />
+						<Button text='update' onClick={() => {}} />
 					</div>
 				</div>
 			</div>

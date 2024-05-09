@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from 'src/store';
 
 import { FormFieldWithError } from '../../common/FormFieldWithError/FormFieldWithError';
 import { Button } from '../../common/Button/Button';
@@ -11,6 +13,8 @@ import { v4 as v4 } from 'uuid';
 
 import { getCourseDuration } from '../../helpers/getCourseDuration';
 import { validateInputValues } from '../../helpers/validateInputValues';
+import { addCourse } from '../../store/courses/coursesSlice';
+import { createAuthor, fetchAuthors } from '../../store/authors/authorsSlice';
 
 const style = {
 	sectionTitle: `text-[#333E48] font-bold text-3xl mb-6 capitalize`,
@@ -40,30 +44,24 @@ interface AuthorsListItem {
 	name: string;
 }
 
-interface CreateCourseProps {
-	authorsList: AuthorsListItem[];
-	setCoursesList: (
-		callback: (prevValues: CoursesListItem[]) => CoursesListItem[]
-	) => void;
-	setAuthorsList: (
-		callback: (prevValues: AuthorsListItem[]) => AuthorsListItem[]
-	) => void;
-}
-
-export const CreateCourse = ({
-	authorsList,
-	setCoursesList,
-	setAuthorsList,
-}: CreateCourseProps) => {
+export const CreateCourse = () => {
 	const navigate = useNavigate();
+
+	const authorsList = useSelector((state: RootState) => state.authors.data);
+	const authorsStatus = useSelector((state: RootState) => state.authors.status);
+	const dispatch = useDispatch<AppDispatch>();
+
+	useEffect(() => {
+		if (authorsStatus === 'idle') {
+			dispatch(fetchAuthors());
+		}
+	}, [authorsStatus, dispatch]);
+
 	const [newCourseAuthors, setNewCourseAuthors] = useState<AuthorsListItem[]>(
 		[]
 	);
-	const [availableAuthors, setAvailableAuthors] =
-		useState<AuthorsListItem[]>(authorsList);
-	const [newAuthor, setNewAuthor] = useState<string>('');
 
-	const [errorMessages, setErrorMessages] = useState<ErrorMessages>({});
+	const [newAuthor, setNewAuthor] = useState<string>('');
 
 	const initialNewCourseData: CoursesListItem = {
 		id: v4(),
@@ -75,6 +73,8 @@ export const CreateCourse = ({
 	};
 	const [newCourseData, setNewCourseData] =
 		useState<CoursesListItem>(initialNewCourseData);
+
+	const [errorMessages, setErrorMessages] = useState<ErrorMessages>({});
 
 	const handleNewCourseDataChange = (
 		e: React.ChangeEvent<HTMLInputElement>
@@ -95,18 +95,9 @@ export const CreateCourse = ({
 				authors: [...newCourseAuthors.map((author) => author.id), author.id],
 			};
 		});
-
-		const removedAuthors = availableAuthors.filter(
-			(author) => author.id !== authorID
-		);
-		setAvailableAuthors(removedAuthors);
 	};
 
 	const deleteAuthorName = (authorID: string): void => {
-		const author = newCourseAuthors.find((author) => author.id === authorID);
-
-		setAvailableAuthors([...availableAuthors, author]);
-
 		const removedAuthors = newCourseAuthors.filter(
 			(author) => author.id !== authorID
 		);
@@ -122,8 +113,8 @@ export const CreateCourse = ({
 
 	const createNewAuthor = (): void => {
 		const createdAuthorInfo = { id: v4(), name: newAuthor };
-		setAuthorsList((prevValues) => [...prevValues, createdAuthorInfo]);
-		setAvailableAuthors((prevValues) => [...prevValues, createdAuthorInfo]);
+
+		dispatch(createAuthor(createdAuthorInfo));
 		setNewAuthor('');
 	};
 
@@ -135,8 +126,8 @@ export const CreateCourse = ({
 		setErrorMessages(errors);
 
 		if (Object.keys(errors).length === 0) {
-			setCoursesList((prevValues) => [...prevValues, newCourseData]);
-			navigate(-1);
+			dispatch(addCourse(newCourseData));
+			navigate('/courses');
 		}
 	};
 
@@ -224,7 +215,7 @@ export const CreateCourse = ({
 
 					<div className='flex flex-col gap-y-4'>
 						<h4 className='font-bold'>Authors List</h4>
-						{availableAuthors.map((author) => {
+						{authorsList.map((author) => {
 							return (
 								<AuthorItem
 									key={author.id}
