@@ -19,17 +19,26 @@ export const authenticateUser = createAsyncThunk(
 	}
 );
 
+const initialState = {
+	status: 'idle',
+	error: null,
+	isAuth: false,
+	name: '',
+	email: '',
+	token: '',
+}
+
 export const userSlice = createSlice({
 	name: 'user',
-	initialState: {
-		status: 'idle',
-		error: null,
-		isAuth: false,
-		name: '',
-		email: '',
-		token: '',
+	initialState,
+	reducers: {
+		logUserOut: (state) => {
+			state.isAuth = false;
+			state.name = '';
+			state.email = '';
+			state.token = '';
+		}
 	},
-	reducers: {},
 	extraReducers: (builder) => {
 		builder
 			.addCase(authenticateUser.pending, (state) => {
@@ -48,5 +57,7 @@ export const userSlice = createSlice({
 			});
 	},
 });
+
+export const { logUserOut } = userSlice.actions
 
 export default userSlice.reducer;
