@@ -9,12 +9,10 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 // 	authors: string[];
 // }
 
-
 export const fetchCourses = createAsyncThunk('fetchCourses', async () => {
 	const data = await fetch('http://localhost:4000/courses/all');
 	return data.json();
 });
-
 
 // export const addCourse = createAsyncThunk('addCourse', async (newCourseData: CoursesListItem) => {
 // 	const data = await fetch('http://localhost:4000/courses/add', {
@@ -39,9 +37,7 @@ export const coursesSlice = createSlice({
 			state.data.push(action.payload);
 		},
 		removeCourse: (state, action) => {
-			state.data = state.data.filter(
-				(course) => course.id !== action.payload
-			);
+			state.data = state.data.filter((course) => course.id !== action.payload);
 		},
 	},
 	extraReducers: (builder) => {
