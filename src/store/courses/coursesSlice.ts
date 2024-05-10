@@ -31,7 +31,7 @@ export const coursesSlice = createSlice({
 		status: 'idle',
 		data: [],
 		error: null,
-		filteredCourses: []
+		filteredCourses: [],
 	},
 	reducers: {
 		createCourse: (state, action) => {
@@ -40,15 +40,24 @@ export const coursesSlice = createSlice({
 		},
 		removeCourse: (state, action) => {
 			state.data = state.data.filter((course) => course.id !== action.payload);
-			state.filteredCourses = state.filteredCourses.filter((course) => course.id !== action.payload);
+			state.filteredCourses = state.filteredCourses.filter(
+				(course) => course.id !== action.payload
+			);
 		},
 		searchCourse: (state, action) => {
-			const filteredCourses = state.data.filter((course) => course.title.toLowerCase().includes(action.payload.toLowerCase().trim()) || course.id.toLowerCase().includes(action.payload.toLowerCase().trim()));
+			const filteredCourses = state.data.filter(
+				(course) =>
+					course.title
+						.toLowerCase()
+						.includes(action.payload.toLowerCase().trim()) ||
+					course.id.toLowerCase().includes(action.payload.toLowerCase().trim())
+			);
 			return {
-				...state, filteredCourses:
-					action.payload.length > 0 ? filteredCourses : [...state.data]
+				...state,
+				filteredCourses:
+					action.payload.length > 0 ? filteredCourses : [...state.data],
 			};
-		}
+		},
 	},
 	extraReducers: (builder) => {
 		builder
@@ -67,6 +76,7 @@ export const coursesSlice = createSlice({
 	},
 });
 
-export const { createCourse, removeCourse, searchCourse } = coursesSlice.actions;
+export const { createCourse, removeCourse, searchCourse } =
+	coursesSlice.actions;
 
 export default coursesSlice.reducer;
