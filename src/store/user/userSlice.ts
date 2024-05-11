@@ -1,5 +1,7 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 
+
+import { createRequest } from '../../helpers/apiServices';
 interface UserData {
 	email: string;
 	password: string;
@@ -8,18 +10,33 @@ interface UserData {
 export const authenticateUser = createAsyncThunk(
 	'authenticateUser',
 	async (userData: UserData) => {
-		const data = await fetch('http://localhost:4000/login', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify(userData),
-		});
-		return data.json();
+		return createRequest('http://localhost:4000/login', 'POST', userData);
 	}
 );
 
-const initialState = {
+type UserStatus = 'idle' | 'loading' | 'succeded' | 'failed';
+
+type Error = null | string;
+
+interface UserState {
+	status: UserStatus;
+	error: Error;
+	isAuth: boolean;
+	name: string;
+	email: string;
+	token: string;
+}
+
+interface ServerResponse {
+	successful: boolean;
+	result: string;
+	user?: {
+		name: string;
+		email: string;
+	};
+}
+
+const initialState: UserState = {
 	status: 'idle',
 	error: null,
 	isAuth: false,
@@ -44,7 +61,7 @@ export const userSlice = createSlice({
 			.addCase(authenticateUser.pending, (state) => {
 				state.status = 'loading';
 			})
-			.addCase(authenticateUser.fulfilled, (state, action) => {
+			.addCase(authenticateUser.fulfilled, (state, action: PayloadAction<ServerResponse>) => {
 				state.status = 'succeded';
 				state.isAuth = true;
 				state.name = action.payload.user.name;

@@ -1,8 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
+import { createRequest } from '../../helpers/apiServices';
+
 export const fetchAuthors = createAsyncThunk('fetchAuthors', async () => {
-	const data = await fetch('http://localhost:4000/authors/all');
-	return data.json();
+	return createRequest('http://localhost:4000/authors/all', 'GET');
 });
 
 export const authorsSlice = createSlice({

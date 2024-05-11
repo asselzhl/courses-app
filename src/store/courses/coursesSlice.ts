@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
+import { createRequest } from '../../helpers/apiServices';
+
 // interface CoursesListItem {
 // 	id: string;
 // 	title: string;
@@ -9,9 +11,9 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 // 	authors: string[];
 // }
 
+
 export const fetchCourses = createAsyncThunk('fetchCourses', async () => {
-	const data = await fetch('http://localhost:4000/courses/all');
-	return data.json();
+	return createRequest('http://localhost:4000/courses/all', 'GET');
 });
 
 // export const addCourse = createAsyncThunk('addCourse', async (newCourseData: CoursesListItem) => {
