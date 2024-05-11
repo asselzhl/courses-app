@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 
-
 import { createRequest } from '../../helpers/apiServices';
 interface UserData {
 	email: string;
@@ -61,13 +60,16 @@ export const userSlice = createSlice({
 			.addCase(authenticateUser.pending, (state) => {
 				state.status = 'loading';
 			})
-			.addCase(authenticateUser.fulfilled, (state, action: PayloadAction<ServerResponse>) => {
-				state.status = 'succeded';
-				state.isAuth = true;
-				state.name = action.payload.user.name;
-				state.email = action.payload.user.email;
-				state.token = action.payload.result;
-			})
+			.addCase(
+				authenticateUser.fulfilled,
+				(state, action: PayloadAction<ServerResponse>) => {
+					state.status = 'succeded';
+					state.isAuth = true;
+					state.name = action.payload.user.name;
+					state.email = action.payload.user.email;
+					state.token = action.payload.result;
+				}
+			)
 			.addCase(authenticateUser.rejected, (state, action) => {
 				state.status = 'failed';
 				state.error = action.error.message;

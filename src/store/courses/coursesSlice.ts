@@ -11,7 +11,6 @@ import { createRequest } from '../../helpers/apiServices';
 // 	authors: string[];
 // }
 
-
 export const fetchCourses = createAsyncThunk('fetchCourses', async () => {
 	return createRequest('http://localhost:4000/courses/all', 'GET');
 });
