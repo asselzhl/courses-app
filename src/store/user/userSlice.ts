@@ -12,6 +12,13 @@ export const authenticateUser = createAsyncThunk(
 		return createRequest('http://localhost:4000/login', 'POST', userData);
 	}
 );
+export const logUserOut = createAsyncThunk('logUserOut', async () => {
+	return createRequest('http://localhost:4000/logout', 'DELETE');
+});
+
+export const getCurrentUser = createAsyncThunk('getCurrentUser', async () => {
+	return createRequest('http://localhost:4000/users/me', 'GET');
+});
 
 type UserStatus = 'idle' | 'loading' | 'succeded' | 'failed';
 
@@ -24,6 +31,7 @@ interface UserState {
 	name: string;
 	email: string;
 	token: string;
+	role: string;
 }
 
 interface ServerResponse {
@@ -42,18 +50,23 @@ const initialState: UserState = {
 	name: '',
 	email: '',
 	token: '',
+	role: '',
+};
+
+const adminCredentials = {
+	email: 'admin@email.com',
 };
 
 export const userSlice = createSlice({
 	name: 'user',
 	initialState,
 	reducers: {
-		logUserOut: (state) => {
-			state.isAuth = false;
-			state.name = '';
-			state.email = '';
-			state.token = '';
-		},
+		// logUserOut: (state) => {
+		// 	state.isAuth = false;
+		// 	state.name = '';
+		// 	state.email = '';
+		// 	state.token = '';
+		// },
 	},
 	extraReducers: (builder) => {
 		builder
@@ -63,20 +76,38 @@ export const userSlice = createSlice({
 			.addCase(
 				authenticateUser.fulfilled,
 				(state, action: PayloadAction<ServerResponse>) => {
+					state.role = 'user';
 					state.status = 'succeded';
 					state.isAuth = true;
 					state.name = action.payload.user.name;
 					state.email = action.payload.user.email;
 					state.token = action.payload.result;
+
+					if (action.payload.user.email === adminCredentials.email) {
+						state.role = 'admin';
+					}
+
+					localStorage.setItem('userToken', action.payload.result);
 				}
 			)
 			.addCase(authenticateUser.rejected, (state, action) => {
 				state.status = 'failed';
 				state.error = action.error.message;
+			})
+			.addCase(logUserOut.fulfilled, (state) => {
+				state.isAuth = false;
+				state.name = '';
+				state.email = '';
+				state.token = '';
+			})
+			.addCase(getCurrentUser.fulfilled, (state, action) => {
+				state.name = action.payload.result.name;
+				state.email = action.payload.result.email;
+				state.role = action.payload.result.role;
 			});
 	},
 });
 
-export const { logUserOut } = userSlice.actions;
+// export const { logUserOut } = userSlice.actions;
 
 export default userSlice.reducer;

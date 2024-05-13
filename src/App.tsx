@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import { Registration } from './components/Registration/Registration.tsx';
 import { Login } from './components/Login/Login.tsx';
 import { Courses } from './components/Courses/Courses.tsx';
-import { CreateCourse } from './components/CreateCourse/CreateCourse.tsx';
+import { CreateCourse } from './components/CourseForm/CourseForm.tsx';
 import { CourseInfo } from './components/CourseInfo/CourseInfo.tsx';
 import { Layout } from './Layout';
 

@@ -9,10 +9,12 @@ export const createRequest = async (
 	method: string,
 	data?: object
 ) => {
+	const userToken = localStorage.getItem('userToken');
 	const requestOptions: RequestOptions = {
 		method: method,
 		headers: {
 			'Content-Type': 'application/json',
+			Authorization: userToken,
 		},
 	};
 
@@ -23,7 +25,6 @@ export const createRequest = async (
 	try {
 		const response = await fetch(endpoint, requestOptions);
 		const result = await response.json();
-
 		return result;
 	} catch (error) {
 		console.error(error);

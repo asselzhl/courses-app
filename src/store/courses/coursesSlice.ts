@@ -2,29 +2,34 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { createRequest } from '../../helpers/apiServices';
 
-// interface CoursesListItem {
-// 	id: string;
-// 	title: string;
-// 	description: string;
-// 	creationDate: string;
-// 	duration: number;
-// 	authors: string[];
-// }
+interface CoursesListItem {
+	title: string;
+	description: string;
+	duration: number;
+	authors: string[];
+}
 
 export const fetchCourses = createAsyncThunk('fetchCourses', async () => {
 	return createRequest('http://localhost:4000/courses/all', 'GET');
 });
 
-// export const addCourse = createAsyncThunk('addCourse', async (newCourseData: CoursesListItem) => {
-// 	const data = await fetch('http://localhost:4000/courses/add', {
-// 		method: 'POST',
-// 		headers: {
-// 			'Content-Type': 'application/json',
-// 		},
-// 		body: JSON.stringify(newCourseData),
-// 	});
-// 	return data.json();
-// })
+export const deleteCourse = createAsyncThunk(
+	'deleteCourse',
+	async (courseId: string) => {
+		return createRequest(`http://localhost:4000/courses/${courseId}`, 'DELETE');
+	}
+);
+
+export const addCourse = createAsyncThunk(
+	'addCourse',
+	async (newCourseData: CoursesListItem) => {
+		return createRequest(
+			'http://localhost:4000/courses/add',
+			'POST',
+			newCourseData
+		);
+	}
+);
 
 export const coursesSlice = createSlice({
 	name: 'courses',
@@ -35,10 +40,10 @@ export const coursesSlice = createSlice({
 		filteredCourses: [],
 	},
 	reducers: {
-		createCourse: (state, action) => {
-			state.data.push(action.payload);
-			state.filteredCourses.push(action.payload);
-		},
+		// createCourse: (state, action) => {
+		// 	state.data.push(action.payload);
+		// 	state.filteredCourses.push(action.payload);
+		// },
 		removeCourse: (state, action) => {
 			state.data = state.data.filter((course) => course.id !== action.payload);
 			state.filteredCourses = state.filteredCourses.filter(
@@ -74,10 +79,12 @@ export const coursesSlice = createSlice({
 				state.status = 'failed';
 				state.error = action.error.message;
 			});
+		// .addCase(addCourse.fulfilled, (state, action) => {
+		// 	state.data = [...state.data, action.payload.result];
+		// });
 	},
 });
 
-export const { createCourse, removeCourse, searchCourse } =
-	coursesSlice.actions;
+export const { removeCourse, searchCourse } = coursesSlice.actions;
 
 export default coursesSlice.reducer;

@@ -19,7 +19,7 @@ export const SearchBar = ({
 				inputID=''
 				onChange={handleSearchInputChange}
 			/>
-			<Button text='Search' onClick={() => {}} />
+			<Button type='submit' text='Search' onClick={() => {}} />
 		</form>
 	);
 };
