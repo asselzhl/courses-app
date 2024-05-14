@@ -53,6 +53,10 @@ export const CreateCourse = () => {
 		}
 	}, [authorsStatus, dispatch]);
 
+	useEffect(() => {
+		dispatch(fetchAuthors());
+	}, [authorsList]);
+
 	const [newCourseAuthors, setNewCourseAuthors] = useState<AuthorsListItem[]>(
 		[]
 	);

@@ -20,14 +20,17 @@ export const Courses = () => {
 	const dispatch = useDispatch<AppDispatch>();
 
 	const coursesStatus = useSelector((state: RootState) => state.courses.status);
+	const coursesList = useSelector((state: RootState) => state.courses.data);
 
 	const userData = useSelector((state: RootState) => state.user);
 
 	useEffect(() => {
-		if (coursesStatus === 'idle') {
-			dispatch(fetchCourses());
-		}
-	}, [coursesStatus, dispatch]);
+		dispatch(fetchCourses());
+	}, [dispatch]);
+
+	useEffect(() => {
+		dispatch(searchCourse(searchValue));
+	}, [coursesList, dispatch]);
 
 	const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setSearchValue(e.target.value);
