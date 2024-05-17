@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { Button } from '../../common/Button/Button';
 import { useSelector } from 'react-redux';
-import { RootState } from 'src/store';
+import { getUserData } from '../../store/selectors';
 
 const style = {
 	container: `flex items-center justify-center flex-col`,
@@ -12,7 +12,7 @@ const style = {
 };
 
 export const EmptyCourseList = () => {
-	const userData = useSelector((state: RootState) => state.user);
+	const userData = useSelector(getUserData);
 
 	return (
 		<div className={style.container}>

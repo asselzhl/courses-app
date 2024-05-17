@@ -8,7 +8,10 @@ interface CoursesListItem {
 	duration: number;
 	authors: string[];
 }
-
+interface UpdateCourseProps {
+	courseData: CoursesListItem;
+	courseId: string;
+}
 export const fetchCourses = createAsyncThunk('fetchCourses', async () => {
 	return createRequest('http://localhost:4000/courses/all', 'GET');
 });
@@ -31,39 +34,49 @@ export const addCourse = createAsyncThunk(
 	}
 );
 
+export const updateCourse = createAsyncThunk(
+	'updateCourse',
+	async ({ courseData, courseId }: UpdateCourseProps) => {
+		createRequest(
+			`http://localhost:4000/courses/${courseId}`,
+			'PUT',
+			courseData
+		).then((resp) => console.log(resp));
+	}
+);
+
 export const coursesSlice = createSlice({
 	name: 'courses',
 	initialState: {
 		status: 'idle',
 		data: [],
 		error: null,
-		filteredCourses: [],
 	},
 	reducers: {
 		// createCourse: (state, action) => {
 		// 	state.data.push(action.payload);
 		// 	state.filteredCourses.push(action.payload);
 		// },
-		removeCourse: (state, action) => {
-			state.data = state.data.filter((course) => course.id !== action.payload);
-			state.filteredCourses = state.filteredCourses.filter(
-				(course) => course.id !== action.payload
-			);
-		},
-		searchCourse: (state, action) => {
-			const filteredCourses = state.data.filter(
-				(course) =>
-					course.title
-						.toLowerCase()
-						.includes(action.payload.toLowerCase().trim()) ||
-					course.id.toLowerCase().includes(action.payload.toLowerCase().trim())
-			);
-			return {
-				...state,
-				filteredCourses:
-					action.payload.length > 0 ? filteredCourses : [...state.data],
-			};
-		},
+		// removeCourse: (state, action) => {
+		// 	state.data = state.data.filter((course) => course.id !== action.payload);
+		// 	state.filteredCourses = state.filteredCourses.filter(
+		// 		(course) => course.id !== action.payload
+		// 	);
+		// },
+		// searchCourse: (state, action) => {
+		// 	const filteredCourses = state.data.filter(
+		// 		(course) =>
+		// 			course.title
+		// 				.toLowerCase()
+		// 				.includes(action.payload.toLowerCase().trim()) ||
+		// 			course.id.toLowerCase().includes(action.payload.toLowerCase().trim())
+		// 	);
+		// 	return {
+		// 		...state,
+		// 		filteredCourses:
+		// 			action.payload.length > 0 ? filteredCourses : [...state.data],
+		// 	};
+		// },
 	},
 	extraReducers: (builder) => {
 		builder
@@ -73,7 +86,7 @@ export const coursesSlice = createSlice({
 			.addCase(fetchCourses.fulfilled, (state, action) => {
 				state.status = 'succeeded';
 				state.data = action.payload.result;
-				state.filteredCourses = action.payload.result;
+				// state.filteredCourses = action.payload.result;
 			})
 			.addCase(fetchCourses.rejected, (state, action) => {
 				state.status = 'failed';
@@ -85,6 +98,6 @@ export const coursesSlice = createSlice({
 	},
 });
 
-export const { removeCourse, searchCourse } = coursesSlice.actions;
+// export const { removeCourse, searchCourse } = coursesSlice.actions;
 
 export default coursesSlice.reducer;

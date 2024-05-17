@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Button } from '../../../../common/Button/Button';
-import { AppDispatch, RootState } from 'src/store';
+import { AppDispatch } from 'src/store';
 import {
 	deleteCourse,
 	fetchCourses,
 } from '../../../../store/courses/coursesSlice';
+import { getUserData } from '../../../../store/selectors';
 
 const style = {
 	courseCardWrapper: `p-8 bg-[#FFFFFF] rounded border-l-8 border-[#333E48] shadow-lg shadow-slate-300 mb-8`,
@@ -39,7 +40,7 @@ export const CourseCard = ({
 	];
 	const dispatch = useDispatch<AppDispatch>();
 
-	const userData = useSelector((state: RootState) => state.user);
+	const userData = useSelector(getUserData);
 
 	const handleDeleteButton = () => {
 		dispatch(deleteCourse(id)).then(() => {
@@ -71,7 +72,9 @@ export const CourseCard = ({
 						{userData.role === 'admin' ? (
 							<>
 								<Button text='delete' onClick={handleDeleteButton} />
-								<Button text='update' onClick={() => {}} />
+								<Link to={`update/${id}`}>
+									<Button text='update' onClick={() => {}} />
+								</Link>
 							</>
 						) : null}
 					</div>

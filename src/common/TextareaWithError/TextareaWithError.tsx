@@ -9,33 +9,36 @@ interface TextareaProps {
 	labelText: string;
 	placeholderText: string;
 	name: string;
+	value: string;
 	textareaID: string;
 	errorMessage?: string;
-	/* eslint-disable */ 
-	onChange: (e?: any) => void;
+	/* eslint-disable */
+  onChange: (e?: any) => void;
 }
 
 export const TextareaWithError = ({
-	labelText,
-	placeholderText,
-	name,
-	textareaID,
-	errorMessage,
-	onChange,
+  labelText,
+  placeholderText,
+  name,
+  value,
+  textareaID,
+  errorMessage,
+  onChange,
 }: TextareaProps) => {
-	return (
-		<div>
-		<label htmlFor={textareaID} className='font-bold capitalize'>
-			{labelText}
-			<textarea
-				id={textareaID}
-				placeholder={placeholderText}
-				name={name}
-				className={style.textarea}
-				onChange={onChange}
-			></textarea>
-		</label>
-		<ErrorMessage errorMessage={errorMessage} />
-		</div>
-	);
+  return (
+    <div>
+      <label htmlFor={textareaID} className="font-bold capitalize">
+        {labelText}
+        <textarea
+          id={textareaID}
+          placeholder={placeholderText}
+          name={name}
+          value={value}
+          className={style.textarea}
+          onChange={onChange}
+        ></textarea>
+      </label>
+      <ErrorMessage errorMessage={errorMessage} />
+    </div>
+  );
 };

@@ -60,14 +60,7 @@ const adminCredentials = {
 export const userSlice = createSlice({
 	name: 'user',
 	initialState,
-	reducers: {
-		// logUserOut: (state) => {
-		// 	state.isAuth = false;
-		// 	state.name = '';
-		// 	state.email = '';
-		// 	state.token = '';
-		// },
-	},
+	reducers: {},
 	extraReducers: (builder) => {
 		builder
 			.addCase(authenticateUser.pending, (state) => {
@@ -104,10 +97,9 @@ export const userSlice = createSlice({
 				state.name = action.payload.result.name;
 				state.email = action.payload.result.email;
 				state.role = action.payload.result.role;
+				state.isAuth = true;
 			});
 	},
 });
-
-// export const { logUserOut } = userSlice.actions;
 
 export default userSlice.reducer;

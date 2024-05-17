@@ -7,10 +7,11 @@ import { convertDateToDotFormat } from '../../helpers/convertDateToDotFormat';
 import { getCourseDuration } from '../../helpers/getCourseDuration';
 import { getAuthorsName } from '../../helpers/getAuthorsName';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState, AppDispatch } from 'src/store';
+import { AppDispatch } from 'src/store';
 
 import { fetchCourses } from '../../store/courses/coursesSlice';
 import { fetchAuthors } from '../../store/authors/authorsSlice';
+import { getAuthorsData, getCoursesData } from '../../store/selectors';
 
 const style = {
 	title: `text-[#333E48] font-bold text-3xl mb-6`,
@@ -28,11 +29,15 @@ export const CourseInfo = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch<AppDispatch>();
 
-	const coursesList = useSelector((state: RootState) => state.courses.data);
-	const authorsList = useSelector((state: RootState) => state.authors.data);
+	const coursesData = useSelector(getCoursesData);
 
-	const coursesStatus = useSelector((state: RootState) => state.courses.status);
-	const authorsStatus = useSelector((state: RootState) => state.authors.status);
+	const coursesList = coursesData.data;
+
+	const authorsData = useSelector(getAuthorsData);
+	const authorsList = authorsData.data;
+
+	const coursesStatus = coursesData.status;
+	const authorsStatus = authorsData.status;
 
 	useEffect(() => {
 		if (coursesStatus === 'idle' && authorsStatus === 'idle') {
@@ -42,7 +47,7 @@ export const CourseInfo = () => {
 	}, [coursesStatus, authorsStatus, dispatch]);
 
 	const handleButtonClick = () => {
-		navigate(-1);
+		navigate('/courses');
 	};
 	if (coursesStatus === 'succeeded' && authorsStatus === 'succeeded') {
 		const course = coursesList.find((course) => course.id === courseId);

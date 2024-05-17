@@ -2,18 +2,23 @@ import React from 'react';
 
 import { FormFieldWithError } from '../../../../common/FormFieldWithError/FormFieldWithError';
 import { Button } from '../../../../common/Button/Button';
+import { useDispatch, useSelector } from 'react-redux';
+import { getFilterValue } from '../../../../store/selectors';
+import { setFilterValue } from '../../../../store/filter/filterSlice';
 
-export const SearchBar = ({
-	searchValue,
-	handleSearchInputChange,
-	handleSearchButtonClick,
-}) => {
+export const SearchBar = () => {
+	const filterValue = useSelector(getFilterValue);
+	const dispatch = useDispatch();
+
+	const handleSearchInputChange = ({ target: { value } }) => {
+		dispatch(setFilterValue(value));
+	};
 	return (
-		<form className='flex gap-x-4 w-[50%]' onSubmit={handleSearchButtonClick}>
+		<form className='flex gap-x-4 w-[50%]'>
 			<FormFieldWithError
 				type='text'
 				labelText=''
-				value={searchValue}
+				value={filterValue}
 				name=''
 				placeholderText='Search'
 				inputID=''

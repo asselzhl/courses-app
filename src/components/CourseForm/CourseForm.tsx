@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from 'src/store';
+import { AppDispatch } from 'src/store';
 
 import { FormFieldWithError } from '../../common/FormFieldWithError/FormFieldWithError';
 import { Button } from '../../common/Button/Button';
@@ -11,8 +11,9 @@ import { AuthorItem } from './AuthorItem/AuthorItem';
 
 import { getCourseDuration } from '../../helpers/getCourseDuration';
 import { validateInputValues } from '../../helpers/validateInputValues';
-import { addCourse } from '../../store/courses/coursesSlice';
+import { addCourse, updateCourse } from '../../store/courses/coursesSlice';
 import { addAuthor, fetchAuthors } from '../../store/authors/authorsSlice';
+import { getAuthorsData, getCoursesData } from '../../store/selectors';
 
 const style = {
 	sectionTitle: `text-[#333E48] font-bold text-3xl mb-6 capitalize`,
@@ -41,11 +42,42 @@ interface AuthorsListItem {
 }
 
 export const CreateCourse = () => {
+	const { courseId } = useParams();
+	const location = useLocation();
+
 	const navigate = useNavigate();
 
-	const authorsList = useSelector((state: RootState) => state.authors.data);
-	const authorsStatus = useSelector((state: RootState) => state.authors.status);
+	const coursesData = useSelector(getCoursesData);
+	const coursesList = coursesData.data;
+
+	const authorsData = useSelector(getAuthorsData);
+	const authorsList = authorsData.data;
+	const authorsStatus = authorsData.status;
+
 	const dispatch = useDispatch<AppDispatch>();
+
+	const initialNewCourseData: CoursesListItem = {
+		title: '',
+		description: '',
+		duration: null,
+		authors: [],
+	};
+
+	let courseAuthorsData: AuthorsListItem[];
+	if (courseId) {
+		const course = coursesList.find((course) => course.id === courseId);
+		initialNewCourseData.title = course.title;
+		initialNewCourseData.description = course.description;
+		initialNewCourseData.duration = course.duration;
+		initialNewCourseData.authors = course.authors;
+
+		courseAuthorsData = initialNewCourseData.authors.map((authorID) => {
+			const authorName = authorsList.find(
+				(authorData) => authorData.id === authorID
+			).name;
+			return { id: authorID, name: authorName };
+		});
+	}
 
 	useEffect(() => {
 		if (authorsStatus === 'idle') {
@@ -57,18 +89,11 @@ export const CreateCourse = () => {
 		dispatch(fetchAuthors());
 	}, [authorsList]);
 
-	const [newCourseAuthors, setNewCourseAuthors] = useState<AuthorsListItem[]>(
-		[]
-	);
+	const [newCourseAuthors, setNewCourseAuthors] =
+		useState<AuthorsListItem[]>(courseAuthorsData);
 
 	const [newAuthor, setNewAuthor] = useState<string>('');
 
-	const initialNewCourseData: CoursesListItem = {
-		title: '',
-		description: '',
-		duration: null,
-		authors: [],
-	};
 	const [newCourseData, setNewCourseData] =
 		useState<CoursesListItem>(initialNewCourseData);
 
@@ -77,6 +102,7 @@ export const CreateCourse = () => {
 	const handleNewCourseDataChange = (
 		e: React.ChangeEvent<HTMLInputElement>
 	) => {
+		console.log(newCourseData);
 		setNewCourseData((prevValues) => {
 			return { ...prevValues, [e.target.name]: e.target.value };
 		});
@@ -130,6 +156,12 @@ export const CreateCourse = () => {
 			navigate('/courses');
 		}
 	};
+	const handleUpdateButtonClick = () => {
+		newCourseData.duration = Number(newCourseData.duration);
+		console.log(newCourseData);
+		dispatch(updateCourse({ courseData: newCourseData, courseId }));
+		navigate('/courses');
+	};
 
 	return (
 		<div className={style.createCourseWrapper}>
@@ -154,6 +186,7 @@ export const CreateCourse = () => {
 						labelText='Description'
 						placeholderText='Description'
 						name='description'
+						value={newCourseData.description}
 						textareaID='description'
 						errorMessage={errorMessages.description}
 						onChange={handleNewCourseDataChange}
@@ -232,7 +265,11 @@ export const CreateCourse = () => {
 					<Link to='/courses'>
 						<Button text='cancel' onClick={() => {}} />
 					</Link>
-					<Button type='submit' text='create course' onClick={() => {}} />
+					{location.pathname === '/courses/add' ? (
+						<Button type='submit' text='create course' onClick={() => {}} />
+					) : (
+						<Button text='update course' onClick={handleUpdateButtonClick} />
+					)}
 				</div>
 			</form>
 		</div>

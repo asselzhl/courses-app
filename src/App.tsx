@@ -6,14 +6,18 @@ import { Courses } from './components/Courses/Courses.tsx';
 import { CreateCourse } from './components/CourseForm/CourseForm.tsx';
 import { CourseInfo } from './components/CourseInfo/CourseInfo.tsx';
 import { Layout } from './Layout';
+import { PrivateRoute } from './components/PrivateRoute/PrivateRoute.tsx';
+import { useSelector } from 'react-redux';
+
+import { getUserData } from './store/selectors.ts';
 
 export function App() {
-	const isUserTokenPresent = !!localStorage.getItem('userToken');
-
+	const userData = useSelector(getUserData);
+	const isLoggedIn = userData.isAuth;
 	const routesConfig = [
 		{
 			path: '/',
-			element: isUserTokenPresent ? <Courses /> : <Login />,
+			element: isLoggedIn ? <Courses /> : <Login />,
 		},
 		{ path: 'login', element: <Login /> },
 		{ path: 'registration', element: <Registration /> },
@@ -23,11 +27,15 @@ export function App() {
 		},
 		{
 			path: 'courses/add',
-			element: <CreateCourse />,
+			element: <PrivateRoute children={<CreateCourse />} />,
 		},
 		{
 			path: 'courses/:courseId',
 			element: <CourseInfo />,
+		},
+		{
+			path: '/courses/update/:courseId',
+			element: <PrivateRoute children={<CreateCourse />} />,
 		},
 	];
 
