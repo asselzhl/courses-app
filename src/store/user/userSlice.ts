@@ -79,8 +79,6 @@ export const userSlice = createSlice({
 					if (action.payload.user.email === adminCredentials.email) {
 						state.role = 'admin';
 					}
-
-					localStorage.setItem('userToken', action.payload.result);
 				}
 			)
 			.addCase(authenticateUser.rejected, (state, action) => {

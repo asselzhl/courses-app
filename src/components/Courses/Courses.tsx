@@ -8,8 +8,8 @@ import { Button } from '../../common/Button/Button';
 import { CourseList } from './components/CourseList/CourseList';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from 'src/store';
-import { fetchCourses } from '../../store/courses/coursesSlice';
 import { getCoursesData, getUserData } from '../../store/selectors';
+import { fetchCourses } from '../../store/operations';
 
 const style = {
 	coursesListWrapper: `bg-[#F7F7F7] h-full py-20 px-40 flex flex-col gap-y-8`,

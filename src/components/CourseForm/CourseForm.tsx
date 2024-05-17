@@ -11,9 +11,9 @@ import { AuthorItem } from './AuthorItem/AuthorItem';
 
 import { getCourseDuration } from '../../helpers/getCourseDuration';
 import { validateInputValues } from '../../helpers/validateInputValues';
-import { addCourse, updateCourse } from '../../store/courses/coursesSlice';
 import { addAuthor, fetchAuthors } from '../../store/authors/authorsSlice';
 import { getAuthorsData, getCoursesData } from '../../store/selectors';
+import { addCourse, updateCourse } from '../../store/operations';
 
 const style = {
 	sectionTitle: `text-[#333E48] font-bold text-3xl mb-6 capitalize`,
@@ -33,7 +33,7 @@ interface ErrorMessages {
 interface CoursesListItem {
 	title: string;
 	description: string;
-	duration: number;
+	duration;
 	authors: string[];
 }
 interface AuthorsListItem {
@@ -59,11 +59,11 @@ export const CreateCourse = () => {
 	const initialNewCourseData: CoursesListItem = {
 		title: '',
 		description: '',
-		duration: null,
+		duration: '',
 		authors: [],
 	};
 
-	let courseAuthorsData: AuthorsListItem[];
+	let courseAuthorsData: AuthorsListItem[] = [];
 	if (courseId) {
 		const course = coursesList.find((course) => course.id === courseId);
 		initialNewCourseData.title = course.title;
@@ -83,11 +83,11 @@ export const CreateCourse = () => {
 		if (authorsStatus === 'idle') {
 			dispatch(fetchAuthors());
 		}
-	}, [authorsStatus, dispatch]);
+	}, [authorsStatus, authorsList, dispatch]);
 
-	useEffect(() => {
-		dispatch(fetchAuthors());
-	}, [authorsList]);
+	// useEffect(() => {
+	//   dispatch(fetchAuthors());
+	// }, [authorsList]);
 
 	const [newCourseAuthors, setNewCourseAuthors] =
 		useState<AuthorsListItem[]>(courseAuthorsData);
@@ -102,7 +102,6 @@ export const CreateCourse = () => {
 	const handleNewCourseDataChange = (
 		e: React.ChangeEvent<HTMLInputElement>
 	) => {
-		console.log(newCourseData);
 		setNewCourseData((prevValues) => {
 			return { ...prevValues, [e.target.name]: e.target.value };
 		});
@@ -142,9 +141,7 @@ export const CreateCourse = () => {
 		setNewAuthor('');
 	};
 
-	const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-
+	const handleFormSubmit = () => {
 		const errors = validateInputValues(newCourseData, {});
 
 		setErrorMessages(errors);
@@ -158,7 +155,6 @@ export const CreateCourse = () => {
 	};
 	const handleUpdateButtonClick = () => {
 		newCourseData.duration = Number(newCourseData.duration);
-		console.log(newCourseData);
 		dispatch(updateCourse({ courseData: newCourseData, courseId }));
 		navigate('/courses');
 	};
@@ -167,7 +163,7 @@ export const CreateCourse = () => {
 		<div className={style.createCourseWrapper}>
 			<h2 className={style.sectionTitle}>Course edit/create page</h2>
 
-			<form onSubmit={handleFormSubmit} action=''>
+			<form action=''>
 				<div className={style.section}>
 					<h3 className={style.sectionSubtitle}>Main Info</h3>
 
@@ -266,7 +262,7 @@ export const CreateCourse = () => {
 						<Button text='cancel' onClick={() => {}} />
 					</Link>
 					{location.pathname === '/courses/add' ? (
-						<Button type='submit' text='create course' onClick={() => {}} />
+						<Button text='create course' onClick={handleFormSubmit} />
 					) : (
 						<Button text='update course' onClick={handleUpdateButtonClick} />
 					)}

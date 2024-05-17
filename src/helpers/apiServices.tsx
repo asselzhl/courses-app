@@ -13,12 +13,13 @@ export const createRequest = async (
 	const requestOptions: RequestOptions = {
 		method: method,
 		headers: {
+			Accept: 'application/json',
 			'Content-Type': 'application/json',
 			Authorization: userToken,
 		},
 	};
 
-	if (method === 'POST') {
+	if (method === 'POST' || method === 'POST') {
 		requestOptions.body = JSON.stringify(data);
 	}
 

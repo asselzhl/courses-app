@@ -9,7 +9,7 @@ import { getAuthorsName } from '../../helpers/getAuthorsName';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppDispatch } from 'src/store';
 
-import { fetchCourses } from '../../store/courses/coursesSlice';
+import { fetchCourses } from '../../store/operations';
 import { fetchAuthors } from '../../store/authors/authorsSlice';
 import { getAuthorsData, getCoursesData } from '../../store/selectors';
 
