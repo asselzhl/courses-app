@@ -8,26 +8,34 @@ interface CoursesListItem {
 	authors: string[];
 }
 interface UpdateCourseProps {
-	courseData: CoursesListItem;
+	newCourseData: CoursesListItem;
 	courseId: string;
 }
-const baseURL = 'http://localhost:4000';
+interface NewAuthor {
+	name: string;
+}
+
+const urls = {
+	baseURL: 'http://localhost:4000/',
+	coursesURL: 'http://localhost:4000/courses/',
+	authorsURL: 'http://localhost:4000/authors/',
+};
 const endpoints = {
 	auth: {
-		login: `${baseURL}/login`,
-		register: `${baseURL}/register`,
-		logout: `${baseURL}/logout`,
+		login: `${urls.baseURL}login`,
+		register: `${urls.baseURL}register`,
+		logout: `${urls.baseURL}logout`,
 	},
 	courses: {
-		getCourses: `${baseURL}/courses/all`,
-		addCourse: `${baseURL}/courses/add`,
+		getCourses: `${urls.coursesURL}all`,
+		addCourse: `${urls.coursesURL}add`,
 	},
 	authors: {
-		getAuthors: `${baseURL}/authors/all`,
-		addAuthor: `${baseURL}/authors/add`,
+		getAuthors: `${urls.authorsURL}all`,
+		addAuthor: `${urls.authorsURL}add`,
 	},
 	users: {
-		getUser: `${baseURL}/users/me`,
+		getUser: `${urls.baseURL}users/me`,
 	},
 };
 
@@ -46,9 +54,7 @@ const getUserToken = () => {
 	return null;
 };
 
-const agent = axios.create({
-	baseURL: 'http://localhost:4000/',
-});
+const agent = axios.create();
 
 export const fetchCourses = createAsyncThunk(
 	'fetchCourses',
@@ -81,12 +87,12 @@ export const addCourse = createAsyncThunk(
 
 export const updateCourse = createAsyncThunk(
 	'updateCourse',
-	async ({ courseData, courseId }: UpdateCourseProps, thunkApi) => {
+	async (courseData: UpdateCourseProps, thunkApi) => {
 		const userToken = getUserToken();
 		try {
 			const data = await agent.put(
-				`${baseURL}/courses/${courseId}`,
-				courseData,
+				`${urls.coursesURL}${courseData.courseId}`,
+				courseData.newCourseData,
 				{ headers: { Authorization: userToken } }
 			);
 			return data;
@@ -101,7 +107,34 @@ export const deleteCourse = createAsyncThunk(
 	async (courseId: string, thunkApi) => {
 		const userToken = getUserToken();
 		try {
-			const data = await agent.delete(`${baseURL}/courses/${courseId}`, {
+			const data = await agent.delete(`${urls.coursesURL}${courseId}`, {
+				headers: { Authorization: userToken },
+			});
+			return data;
+		} catch (error) {
+			return thunkApi.rejectWithValue(error);
+		}
+	}
+);
+
+export const fetchAuthors = createAsyncThunk(
+	'fetchAuthors',
+	async (_, thunkApi) => {
+		try {
+			const data = await agent.get(endpoints.authors.getAuthors);
+			return data;
+		} catch (error) {
+			return thunkApi.rejectWithValue(error);
+		}
+	}
+);
+
+export const addAuthor = createAsyncThunk(
+	'addAuthor',
+	async (newAuthor: NewAuthor, thunkApi) => {
+		const userToken = getUserToken();
+		try {
+			const data = await agent.post(endpoints.authors.addAuthor, newAuthor, {
 				headers: { Authorization: userToken },
 			});
 			return data;

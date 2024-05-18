@@ -1,25 +1,6 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
-import { createRequest } from '../../helpers/apiServices';
-
-interface NewAuthor {
-	name: string;
-}
-
-export const fetchAuthors = createAsyncThunk('fetchAuthors', async () => {
-	return createRequest('http://localhost:4000/authors/all', 'GET');
-});
-
-export const addAuthor = createAsyncThunk(
-	'addAuthor',
-	async (newAuthor: NewAuthor) => {
-		return createRequest(
-			'http://localhost:4000/authors/add',
-			'POST',
-			newAuthor
-		);
-	}
-);
+import { fetchAuthors } from '../operations';
 
 export const authorsSlice = createSlice({
 	name: 'authors',
@@ -40,7 +21,7 @@ export const authorsSlice = createSlice({
 			})
 			.addCase(fetchAuthors.fulfilled, (state, action) => {
 				state.status = 'succeeded';
-				state.data = action.payload.result;
+				state.data = action.payload.data.result;
 			})
 			.addCase(fetchAuthors.rejected, (state, action) => {
 				state.status = 'failed';

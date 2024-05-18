@@ -6,7 +6,7 @@ import { convertDateToDotFormat } from '../../../../helpers/convertDateToDotForm
 import { getCourseDuration } from '../../../../helpers/getCourseDuration';
 import { getAuthorsName } from '../../../../helpers/getAuthorsName';
 
-import { fetchAuthors } from '../../../../store/authors/authorsSlice';
+import { fetchAuthors } from '../../../../store/operations';
 
 import { CourseCard } from '../CourseCard/CourseCard';
 import {

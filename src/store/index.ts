@@ -18,6 +18,7 @@ import storage from 'redux-persist/lib/storage';
 const persistConfig = {
 	key: 'root',
 	storage,
+	blacklist: ['courses', 'authors'],
 };
 const userPersistConfig = {
 	key: 'user',
@@ -42,6 +43,9 @@ export const store = configureStore({
 				ignoredActions: [
 					'fetchCourses/fulfilled',
 					'addCourse/fulfilled',
+					'updateCourse/fulfilled',
+					'addAuthor/fulfilled',
+					'fetchAuthors/fulfilled',
 					FLUSH,
 					REHYDRATE,
 					PAUSE,
