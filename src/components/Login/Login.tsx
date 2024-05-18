@@ -8,7 +8,7 @@ import { validateInputValues } from '../../helpers/validateInputValues';
 
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from 'src/store';
-import { authenticateUser } from '../../store/user/userSlice';
+import { authenticateUser } from '../../store/thunks';
 
 const style = {
 	blockTitle: `text-[#333E48] font-bold text-3xl mb-6`,

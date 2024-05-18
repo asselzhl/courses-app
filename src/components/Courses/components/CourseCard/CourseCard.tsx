@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '../../../../common/Button/Button';
 import { AppDispatch } from 'src/store';
 import { getUserData } from '../../../../store/selectors';
-import { fetchCourses, deleteCourse } from '../../../../store/operations';
+import { fetchCourses, deleteCourse } from '../../../../store/thunks';
 
 const style = {
 	courseCardWrapper: `p-8 bg-[#FFFFFF] rounded border-l-8 border-[#333E48] shadow-lg shadow-slate-300 mb-8`,

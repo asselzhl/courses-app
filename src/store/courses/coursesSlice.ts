@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { fetchCourses } from '../operations';
+import { fetchCourses } from '../thunks';
 
 export const coursesSlice = createSlice({
 	name: 'courses',

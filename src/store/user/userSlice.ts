@@ -1,24 +1,6 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
-import { createRequest } from '../../helpers/apiServices';
-interface UserData {
-	email: string;
-	password: string;
-}
-
-export const authenticateUser = createAsyncThunk(
-	'authenticateUser',
-	async (userData: UserData) => {
-		return createRequest('http://localhost:4000/login', 'POST', userData);
-	}
-);
-export const logUserOut = createAsyncThunk('logUserOut', async () => {
-	return createRequest('http://localhost:4000/logout', 'DELETE');
-});
-
-export const getCurrentUser = createAsyncThunk('getCurrentUser', async () => {
-	return createRequest('http://localhost:4000/users/me', 'GET');
-});
+import { authenticateUser, getCurrentUser, logUserOut } from '../thunks';
 
 type UserStatus = 'idle' | 'loading' | 'succeded' | 'failed';
 
@@ -34,14 +16,7 @@ interface UserState {
 	role: string;
 }
 
-interface ServerResponse {
-	successful: boolean;
-	result: string;
-	user?: {
-		name: string;
-		email: string;
-	};
-}
+
 
 const initialState: UserState = {
 	status: 'idle',
@@ -66,21 +41,18 @@ export const userSlice = createSlice({
 			.addCase(authenticateUser.pending, (state) => {
 				state.status = 'loading';
 			})
-			.addCase(
-				authenticateUser.fulfilled,
-				(state, action: PayloadAction<ServerResponse>) => {
-					state.role = 'user';
-					state.status = 'succeded';
-					state.isAuth = true;
-					state.name = action.payload.user.name;
-					state.email = action.payload.user.email;
-					state.token = action.payload.result;
+			.addCase(authenticateUser.fulfilled, (state, action) => {
+				state.role = 'user';
+				state.status = 'succeded';
+				state.isAuth = true;
+				state.name = action.payload.data.user.name;
+				state.email = action.payload.data.user.email;
+				state.token = action.payload.data.result;
 
-					if (action.payload.user.email === adminCredentials.email) {
-						state.role = 'admin';
-					}
+				if (action.payload.data.user.email === adminCredentials.email) {
+					state.role = 'admin';
 				}
-			)
+			})
 			.addCase(authenticateUser.rejected, (state, action) => {
 				state.status = 'failed';
 				state.error = action.error.message;
@@ -92,9 +64,9 @@ export const userSlice = createSlice({
 				state.token = '';
 			})
 			.addCase(getCurrentUser.fulfilled, (state, action) => {
-				state.name = action.payload.result.name;
-				state.email = action.payload.result.email;
-				state.role = action.payload.result.role;
+				state.name = action.payload.data.result.name;
+				state.email = action.payload.data.result.email;
+				state.role = action.payload.data.result.role;
 				state.isAuth = true;
 			});
 	},

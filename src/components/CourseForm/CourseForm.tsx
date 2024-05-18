@@ -16,7 +16,7 @@ import {
 	fetchAuthors,
 	addCourse,
 	updateCourse,
-} from '../../store/operations';
+} from '../../store/thunks';
 import { getAuthorsData, getCoursesData } from '../../store/selectors';
 
 const style = {
@@ -163,7 +163,7 @@ export const CreateCourse = () => {
 			newCourseData: newCourseData,
 			courseId: courseId,
 		};
-		console.log(courseData);
+
 		dispatch(updateCourse(courseData));
 		navigate('/courses');
 	};

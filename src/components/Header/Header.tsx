@@ -6,7 +6,7 @@ import { Button } from '../../common/Button/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from 'src/store';
 
-import { getCurrentUser, logUserOut } from '../../store/user/userSlice';
+import { getCurrentUser, logUserOut } from '../../store/thunks';
 import { getUserData } from '../../store/selectors';
 
 const style = {
@@ -23,7 +23,9 @@ export const Header = () => {
 	const isLoggedIn = userData.isAuth;
 
 	useEffect(() => {
-		dispatch(getCurrentUser());
+		if (isLoggedIn) {
+			dispatch(getCurrentUser());
+		}
 	}, [dispatch]);
 
 	const handleButtonClick = () => {

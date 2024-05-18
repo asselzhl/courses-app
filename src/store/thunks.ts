@@ -14,6 +14,10 @@ interface UpdateCourseProps {
 interface NewAuthor {
 	name: string;
 }
+interface UserData {
+	email: string;
+	password: string;
+}
 
 const urls = {
 	baseURL: 'http://localhost:4000/',
@@ -135,6 +139,48 @@ export const addAuthor = createAsyncThunk(
 		const userToken = getUserToken();
 		try {
 			const data = await agent.post(endpoints.authors.addAuthor, newAuthor, {
+				headers: { Authorization: userToken },
+			});
+			return data;
+		} catch (error) {
+			return thunkApi.rejectWithValue(error);
+		}
+	}
+);
+
+export const authenticateUser = createAsyncThunk(
+	'authenticateUser',
+	async (userData: UserData, thunkApi) => {
+		try {
+			const data = await agent.post(endpoints.auth.login, userData);
+			return data;
+		} catch (error) {
+			return thunkApi.rejectWithValue(error);
+		}
+	}
+);
+
+export const logUserOut = createAsyncThunk(
+	'logUserOut',
+	async (_, thunkApi) => {
+		const userToken = getUserToken();
+		try {
+			const data = await agent.delete(endpoints.auth.logout, {
+				headers: { Authorization: userToken },
+			});
+			return data;
+		} catch (error) {
+			return thunkApi.rejectWithValue(error);
+		}
+	}
+);
+
+export const getCurrentUser = createAsyncThunk(
+	'getCurrentUser',
+	async (_, thunkApi) => {
+		const userToken = getUserToken();
+		try {
+			const data = await agent.get(endpoints.users.getUser, {
 				headers: { Authorization: userToken },
 			});
 			return data;

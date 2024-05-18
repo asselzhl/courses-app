@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { fetchAuthors } from '../operations';
+import { fetchAuthors } from '../thunks';
 
 export const authorsSlice = createSlice({
 	name: 'authors',
@@ -9,11 +9,7 @@ export const authorsSlice = createSlice({
 		data: [],
 		error: null,
 	},
-	reducers: {
-		createAuthor: (state, action) => {
-			state.data.push(action.payload);
-		},
-	},
+	reducers: {},
 	extraReducers: (builder) => {
 		builder
 			.addCase(fetchAuthors.pending, (state) => {
@@ -29,7 +25,5 @@ export const authorsSlice = createSlice({
 			});
 	},
 });
-
-export const { createAuthor } = authorsSlice.actions;
 
 export default authorsSlice.reducer;

@@ -9,7 +9,7 @@ import { CourseList } from './components/CourseList/CourseList';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from 'src/store';
 import { getCoursesData, getUserData } from '../../store/selectors';
-import { fetchCourses } from '../../store/operations';
+import { fetchCourses } from '../../store/thunks';
 
 const style = {
 	coursesListWrapper: `bg-[#F7F7F7] h-full py-20 px-40 flex flex-col gap-y-8`,

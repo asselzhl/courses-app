@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 import { FormFieldWithError } from '../../common/FormFieldWithError/FormFieldWithError';
 import { Button } from '../../common/Button/Button';
 
 import { validateInputValues } from '../../helpers/validateInputValues';
-import { createRequest } from '../../helpers/apiServices';
 
 const style = {
 	blockTitle: `text-[#333E48] font-bold text-3xl mb-6`,
@@ -16,6 +16,8 @@ const style = {
 interface ErrorMessages {
 	[key: string]: string;
 }
+
+const agent = axios.create();
 
 export const Registration = () => {
 	const navigate = useNavigate();
@@ -43,9 +45,13 @@ export const Registration = () => {
 		setErrorMessages(errors);
 
 		if (Object.keys(errors).length === 0) {
-			createRequest('http://localhost:4000/register', 'POST', newUserData);
-			setNewUserData(initialNewUserData);
-			navigate('/login');
+			try {
+				agent.post('http://localhost:4000/register', newUserData);
+				setNewUserData(initialNewUserData);
+				navigate('/login');
+			} catch (error) {
+				console.error(error);
+			}
 		}
 	};
 	return (
