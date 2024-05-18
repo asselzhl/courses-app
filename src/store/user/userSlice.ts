@@ -16,8 +16,6 @@ interface UserState {
 	role: string;
 }
 
-
-
 const initialState: UserState = {
 	status: 'idle',
 	error: null,
