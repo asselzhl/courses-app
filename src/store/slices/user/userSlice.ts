@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { authenticateUser, getCurrentUser, logUserOut } from '../../thunks';
 import { UserState } from '../types';
-import { adminCredentials, stateStatus, userRole } from '../constants';
+import { adminCredentials, stateStatus, userRoles } from '../constants';
 import { handlePending, handleRejected } from '../reducersUtils';
 
 const initialState: UserState = {
@@ -11,7 +11,7 @@ const initialState: UserState = {
 	name: '',
 	email: '',
 	token: '',
-	role: userRole.user,
+	role: userRoles.user,
 };
 
 export const userSlice = createSlice({
@@ -32,9 +32,9 @@ export const userSlice = createSlice({
 				state.token = result;
 
 				if (email === adminCredentials.email) {
-					state.role = userRole.admin;
+					state.role = userRoles.admin;
 				} else {
-					state.role = userRole.user;
+					state.role = userRoles.user;
 				}
 			})
 			.addCase(authenticateUser.rejected, handleRejected)

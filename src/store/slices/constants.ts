@@ -11,7 +11,7 @@ export const stateStatus: { [key in StateStatus]: StateStatus } = {
 	failed: 'failed',
 };
 
-export const userRole: { [key in UserRole]: UserRole } = {
+export const userRoles: { [key in UserRole]: UserRole } = {
 	admin: 'admin',
 	user: 'user',
 };
