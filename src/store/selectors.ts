@@ -34,7 +34,7 @@ export const getAuthorsState = (state: RootState) => {
 	return state.authors;
 };
 export const getAuthorsStateStatus = (state: RootState) => {
-	return state.user.status;
+	return state.authors.status;
 };
 export const getAuthorsList = (state: RootState) => {
 	return state.authors.data;
