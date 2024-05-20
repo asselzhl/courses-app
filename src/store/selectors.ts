@@ -53,3 +53,9 @@ export const getFilteredCourses = createSelector(
 		);
 	}
 );
+
+// New Course selectors
+export const getNewCourseData = (state: RootState) => state.newCourse;
+
+// New Course Authors selectors
+export const getNewCourseAuthors = (state: RootState) => state.newCourseAuthors;

@@ -26,9 +26,7 @@ export const Header = () => {
 	const userName = useSelector(getCurrentUserName);
 
 	useEffect(() => {
-		if (isUserLoggedIn) {
-			dispatch(getCurrentUser());
-		}
+		dispatch(getCurrentUser());
 	}, [dispatch]);
 
 	const handleButtonClick = () => {

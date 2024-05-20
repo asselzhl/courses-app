@@ -3,6 +3,8 @@ import coursesReducer from './slices/courses/coursesSlice';
 import authorsReducer from './slices/authors/authorsSlice';
 import userReducer from './slices/user/userSlice';
 import { filterReducer } from './slices/filter/filterSlice';
+import { newCourseReducer } from './slices/newCourse/newCourseSlice';
+import { newCourseAuthorsReducer } from './slices/newCourseAuthors/newCourseAuthorsSlice';
 import {
 	persistStore,
 	persistReducer,
@@ -18,7 +20,14 @@ import storage from 'redux-persist/lib/storage';
 const persistConfig = {
 	key: 'root',
 	storage,
-	blacklist: ['courses', 'authors', 'user', 'filter'],
+	blacklist: [
+		'courses',
+		'authors',
+		'user',
+		'filter',
+		'newCourse',
+		'newCourseAuthors',
+	],
 };
 const userPersistConfig = {
 	key: 'user',
@@ -31,6 +40,8 @@ const rootReducer = combineReducers({
 	authors: authorsReducer,
 	user: persistReducer(userPersistConfig, userReducer),
 	filter: filterReducer,
+	newCourse: newCourseReducer,
+	newCourseAuthors: newCourseAuthorsReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
