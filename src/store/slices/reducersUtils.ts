@@ -1,6 +1,5 @@
 import { StateStatus } from './types';
 import { stateStatus } from './constants';
-import { PayloadAction } from '@reduxjs/toolkit';
 
 export const handlePending = (state: { status: StateStatus }) => {
 	state.status = stateStatus.loading;
