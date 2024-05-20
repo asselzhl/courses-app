@@ -1,7 +1,6 @@
 import { RootState } from '.';
 import { createSelector } from '@reduxjs/toolkit';
 
-
 // User selectors
 export const getCurrentUserState = (state: RootState) => {
 	return state.user;
@@ -19,7 +18,6 @@ export const getCurrentUserRole = (state: RootState) => {
 	return state.user.role;
 };
 
-
 // Courses selectors
 export const getCoursesState = (state: RootState) => {
 	return state.courses;
@@ -31,7 +29,6 @@ export const getCoursesList = (state: RootState) => {
 	return state.courses.data;
 };
 
-
 // Authors selectors
 export const getAuthorsState = (state: RootState) => {
 	return state.authors;
@@ -42,8 +39,6 @@ export const getAuthorsStateStatus = (state: RootState) => {
 export const getAuthorsList = (state: RootState) => {
 	return state.authors.data;
 };
-
-
 
 // Filter selectors
 export const getFilterValue = (state: RootState) => state.filter;
