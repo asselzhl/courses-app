@@ -4,7 +4,7 @@ import { FormFieldWithError } from '../../../../common/FormFieldWithError/FormFi
 import { Button } from '../../../../common/Button/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { getFilterValue } from '../../../../store/selectors';
-import { setFilterValue } from '../../../../store/filter/filterSlice';
+import { setFilterValue } from '../../../../store/slices/filter/filterSlice';
 
 export const SearchBar = () => {
 	const filterValue = useSelector(getFilterValue);

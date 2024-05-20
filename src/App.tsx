@@ -5,11 +5,11 @@ import { Login } from './components/Login/Login.tsx';
 import { Courses } from './components/Courses/Courses.tsx';
 import { CreateCourse } from './components/CourseForm/CourseForm.tsx';
 import { CourseInfo } from './components/CourseInfo/CourseInfo.tsx';
-import { Layout } from './Layout';
 import { PrivateRoute } from './components/PrivateRoute/PrivateRoute.tsx';
 import { useSelector } from 'react-redux';
 
 import { getUserData } from './store/selectors.ts';
+import { Header } from './components/Header/Header.tsx';
 
 export function App() {
 	const userData = useSelector(getUserData);
@@ -40,14 +40,15 @@ export function App() {
 	];
 
 	return (
-		<Routes>
-			<Route element={<Layout />}>
+		<>
+			<Header />
+			<Routes>
 				{routesConfig.map((route) => {
 					return (
 						<Route key={route.path} path={route.path} element={route.element} />
 					);
 				})}
-			</Route>
-		</Routes>
+			</Routes>
+		</>
 	);
 }

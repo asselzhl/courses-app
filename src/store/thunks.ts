@@ -19,6 +19,8 @@ interface UserData {
 	password: string;
 }
 
+const agent = axios.create();
+
 const urls = {
 	baseURL: 'http://localhost:4000/',
 	coursesURL: 'http://localhost:4000/courses/',
@@ -57,8 +59,6 @@ const getUserToken = () => {
 	}
 	return null;
 };
-
-const agent = axios.create();
 
 export const fetchCourses = createAsyncThunk(
 	'fetchCourses',

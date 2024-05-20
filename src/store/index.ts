@@ -1,8 +1,8 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import coursesReducer from './courses/coursesSlice';
-import authorsReducer from './authors/authorsSlice';
-import userReducer from './user/userSlice';
-import { filterReducer } from './filter/filterSlice';
+import coursesReducer from './slices/courses/coursesSlice';
+import authorsReducer from './slices/authors/authorsSlice';
+import userReducer from './slices/user/userSlice';
+import { filterReducer } from './slices/filter/filterSlice';
 import {
 	persistStore,
 	persistReducer,
