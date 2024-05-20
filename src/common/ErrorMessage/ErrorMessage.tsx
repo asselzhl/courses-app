@@ -1,23 +1,13 @@
 import React from 'react';
 
-interface ErrorMessages {
-	[key: string]: string;
-}
-
 interface ErrorMessageProps {
-	errorMessages: ErrorMessages;
-	inputField: string;
+	errorMessage: string;
 }
 
-export const ErrorMessage = ({
-	errorMessages,
-	inputField,
-}: ErrorMessageProps) => {
+export const ErrorMessage = ({ errorMessage }: ErrorMessageProps) => {
 	return (
 		<>
-			{errorMessages[inputField] ? (
-				<p className='text-[#FF0000]'>{errorMessages[inputField]}</p>
-			) : null}
+			{errorMessage && <span className='text-[#FF0000]'>{errorMessage}</span>}
 		</>
 	);
 };

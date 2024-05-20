@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { Input } from '../../../../common/Input/Input';
+import { FormFieldWithError } from '../../../../common/FormFieldWithError/FormFieldWithError';
 import { Button } from '../../../../common/Button/Button';
 
 export const SearchBar = ({ searchValue, handleSearchInputChange }) => {
 	return (
 		<div className='flex gap-x-4 w-[50%]'>
-			<Input
+			<FormFieldWithError
 				type='text'
 				labelText=''
 				value={searchValue}

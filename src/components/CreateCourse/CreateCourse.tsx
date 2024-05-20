@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
-import { Input } from '../../common/Input/Input';
+import { FormFieldWithError } from '../../common/FormFieldWithError/FormFieldWithError';
 import { Button } from '../../common/Button/Button';
-import { Textarea } from '../../common/Textarea/Textarea';
+import { TextareaWithError } from '../../common/TextareaWithError/TextareaWithError';
 import { ErrorMessage } from '../../common/ErrorMessage/ErrorMessage';
 import { AuthorItem } from './AuthorItem/AuthorItem';
 
@@ -19,6 +20,7 @@ const style = {
 	durationContainer: `flex items-center gap-x-4`,
 	availableAuthorsTitle: `text-2xl font-bold mb-6`,
 	newCourseAuthorsContainer: `max-w-[20%] flex flex-col gap-y-4 text-center`,
+	createCourseWrapper: `bg-[#F7F7F7] h-full py-20 px-40 flex flex-col`,
 };
 
 interface ErrorMessages {
@@ -40,7 +42,6 @@ interface AuthorsListItem {
 
 interface CreateCourseProps {
 	authorsList: AuthorsListItem[];
-	toggleCourseForm: () => void;
 	setCoursesList: (
 		callback: (prevValues: CoursesListItem[]) => CoursesListItem[]
 	) => void;
@@ -51,10 +52,10 @@ interface CreateCourseProps {
 
 export const CreateCourse = ({
 	authorsList,
-	toggleCourseForm,
 	setCoursesList,
 	setAuthorsList,
 }: CreateCourseProps) => {
+	const navigate = useNavigate();
 	const [newCourseAuthors, setNewCourseAuthors] = useState<AuthorsListItem[]>(
 		[]
 	);
@@ -135,61 +136,50 @@ export const CreateCourse = ({
 
 		if (Object.keys(errors).length === 0) {
 			setCoursesList((prevValues) => [...prevValues, newCourseData]);
-			toggleCourseForm();
+			navigate(-1);
 		}
 	};
 
 	return (
-		<>
+		<div className={style.createCourseWrapper}>
 			<h2 className={style.sectionTitle}>Course edit/create page</h2>
 
 			<form onSubmit={handleFormSubmit} action=''>
 				<div className={style.section}>
 					<h3 className={style.sectionSubtitle}>Main Info</h3>
 
-					<div>
-						<Input
-							type='text'
-							labelText='Title'
-							placeholderText='Course Titlte'
-							name='title'
-							value={newCourseData.title}
-							inputID='courseName'
-							onChange={handleNewCourseDataChange}
-						/>
-						<ErrorMessage errorMessages={errorMessages} inputField='title' />
-					</div>
+					<FormFieldWithError
+						type='text'
+						labelText='Title'
+						placeholderText='Course Titlte'
+						name='title'
+						value={newCourseData.title}
+						inputID='courseName'
+						errorMessage={errorMessages.title}
+						onChange={handleNewCourseDataChange}
+					/>
 
-					<div>
-						<Textarea
-							labelText='Description'
-							placeholderText='Description'
-							name='description'
-							textareaID='description'
-							onChange={handleNewCourseDataChange}
-						/>
-						<ErrorMessage
-							errorMessages={errorMessages}
-							inputField='description'
-						/>
-					</div>
+					<TextareaWithError
+						labelText='Description'
+						placeholderText='Description'
+						name='description'
+						textareaID='description'
+						errorMessage={errorMessages.description}
+						onChange={handleNewCourseDataChange}
+					/>
 
 					<div className={style.durationContainer}>
-						<div>
-							<Input
-								type='number'
-								labelText='Duration'
-								placeholderText='Duration'
-								name='duration'
-								value={newCourseData.duration}
-								inputID='duration'
-								onChange={handleNewCourseDataChange}
-							/>
-							<ErrorMessage
-								errorMessages={errorMessages}
-								inputField='duration'
-							/>
-						</div>
+						<FormFieldWithError
+							type='number'
+							labelText='Duration'
+							placeholderText='Duration'
+							name='duration'
+							value={newCourseData.duration}
+							inputID='duration'
+							errorMessage={errorMessages.duration}
+							onChange={handleNewCourseDataChange}
+						/>
+
 						<p>
 							{newCourseData.duration
 								? getCourseDuration(newCourseData.duration)
@@ -200,7 +190,7 @@ export const CreateCourse = ({
 						<div>
 							<h3 className={style.availableAuthorsTitle}>Authors</h3>
 							<div className='flex items-end gap-x-4'>
-								<Input
+								<FormFieldWithError
 									type='text'
 									labelText='Author Name'
 									placeholderText='Author Name'
@@ -228,10 +218,7 @@ export const CreateCourse = ({
 										);
 									})
 								: 'Author list is empty'}
-							<ErrorMessage
-								errorMessages={errorMessages}
-								inputField='authors'
-							/>
+							<ErrorMessage errorMessage={errorMessages.authors} />
 						</div>
 					</div>
 
@@ -251,15 +238,12 @@ export const CreateCourse = ({
 				</div>
 
 				<div className='flex gap-x-5 justify-end'>
-					<Button
-						text='cancel'
-						onClick={() => {
-							toggleCourseForm();
-						}}
-					/>
+					<Link to='/courses'>
+						<Button text='cancel' onClick={() => {}} />
+					</Link>
 					<Button type='submit' text='create course' onClick={() => {}} />
 				</div>
 			</form>
-		</>
+		</div>
 	);
 };

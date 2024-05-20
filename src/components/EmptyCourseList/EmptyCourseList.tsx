@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import { Button } from '../../common/Button/Button';
 
@@ -15,7 +16,9 @@ export const EmptyCourseList = () => {
 			<h3 className={style.subtitle}>
 				Please use 'Add New Course' button to add your first course
 			</h3>
-			<Button text='Add new course' onClick={() => {}} />
+			<Link to='/courses/add'>
+				<Button text='Add new course' onClick={() => {}} />
+			</Link>
 		</div>
 	);
 };

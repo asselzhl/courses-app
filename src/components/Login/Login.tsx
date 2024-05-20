@@ -1,21 +1,25 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
-import { Input } from '../../common/Input/Input';
+import { FormFieldWithError } from '../../common/FormFieldWithError/FormFieldWithError';
 import { Button } from '../../common/Button/Button';
-import { ErrorMessage } from '../../common/ErrorMessage/ErrorMessage';
 
 import { validateInputValues } from '../../helpers/validateInputValues';
+import { createRequest } from '../../helpers/apiServices';
 
 const style = {
 	blockTitle: `text-[#333E48] font-bold text-3xl mb-6`,
 	formContainer: `border-[#CFCFCF] border bg-white rounded w-[600px] py-20 px-36 flex flex-col gap-y-8`,
+	loginFormWrapper: `bg-[#F7F7F7] h-screen py-20 flex flex-col justify-center items-center`,
 };
 
 interface ErrorMessages {
 	[key: string]: string;
 }
 
-export const Login = ({ setShowRegistrationForm, setShowLoginForm }) => {
+export const Login = ({ setIsLoggedIn }) => {
+	const navigate = useNavigate();
+
 	const [errorMessages, setErrorMessages] = useState<ErrorMessages>({});
 	const initialUserData = {
 		email: '',
@@ -38,56 +42,58 @@ export const Login = ({ setShowRegistrationForm, setShowLoginForm }) => {
 		setErrorMessages(errors);
 
 		if (Object.keys(errors).length === 0) {
-			setUserData(initialUserData);
-			setShowLoginForm(false);
+			createRequest('http://localhost:4000/login', 'POST', userData).then(
+				(response) => {
+					if (response.successful) {
+						localStorage.setItem('userToken', response.result);
+						localStorage.setItem('username', response.user.name);
+						setIsLoggedIn(true);
+
+						navigate('/courses');
+						setUserData(initialUserData);
+					}
+				}
+			);
 		}
 	};
 	return (
-		<div>
-			<h2 className={style.blockTitle}>Login</h2>
+		<>
+			<div className={style.loginFormWrapper}>
+				<h2 className={style.blockTitle}>Login</h2>
 
-			<form className={style.formContainer} onSubmit={handleFormSubmit}>
-				<div>
-					<Input
+				<form className={style.formContainer} onSubmit={handleFormSubmit}>
+					<FormFieldWithError
 						type='email'
 						labelText='Email'
 						name='email'
 						placeholderText='Email'
 						value={userData.email}
 						inputID='email'
+						errorMessage={errorMessages.email}
 						onChange={handleUserDataChange}
 					/>
-					<ErrorMessage errorMessages={errorMessages} inputField='email' />
-				</div>
 
-				<div>
-					<Input
+					<FormFieldWithError
 						type='password'
 						labelText='Password'
 						name='password'
 						placeholderText='Password'
 						value={userData.password}
 						inputID='password'
+						errorMessage={errorMessages.password}
 						onChange={handleUserDataChange}
 					/>
-					<ErrorMessage errorMessages={errorMessages} inputField='password' />
-				</div>
-				<Button text='login' type='submit' onClick={() => {}} />
-				<div className='text-center'>
-					<span>If you have an account you may </span>
-					<a
-						href=''
-						onClick={(e) => {
-							e.preventDefault();
-							setShowLoginForm(false);
-							setShowRegistrationForm(true);
-						}}
-						className='font-bold'
-					>
-						Registration
-					</a>
-				</div>
-			</form>
-		</div>
+
+					<Button text='login' type='submit' onClick={() => {}} />
+
+					<div className='text-center'>
+						<span>If you have an account you may </span>
+						<Link className='font-bold' to='/registration'>
+							Registration
+						</Link>
+					</div>
+				</form>
+			</div>
+		</>
 	);
 };
