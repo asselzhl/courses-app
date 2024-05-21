@@ -20,7 +20,10 @@ export const courseFormSlice = createSlice({
 		setCourseFormData: (state, action) => {
 			const { payload } = action;
 
-			if (payload.duration !== undefined && typeof payload.duration !== 'number') {
+			if (
+				payload.duration !== undefined &&
+				typeof payload.duration !== 'number'
+			) {
 				payload.duration = Number(payload.duration);
 			}
 			return { ...state, ...payload };
