@@ -8,7 +8,7 @@ interface CoursesListItem {
 	authors: string[];
 }
 interface UpdateCourseProps {
-	newCourseData: CoursesListItem;
+	courseFormData: CoursesListItem;
 	courseId: string;
 }
 interface NewAuthor {
@@ -96,7 +96,7 @@ export const updateCourse = createAsyncThunk(
 		try {
 			const data = await agent.put(
 				`${urls.coursesURL}${courseData.courseId}`,
-				courseData.newCourseData,
+				courseData.courseFormData,
 				{ headers: { Authorization: userToken } }
 			);
 			return data;

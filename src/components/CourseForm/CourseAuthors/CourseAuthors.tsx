@@ -1,10 +1,22 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '../../../common/Button/Button';
 import { FormFieldWithError } from '../../../common/FormFieldWithError/FormFieldWithError';
 import { AuthorItem } from '../AuthorItem/AuthorItem';
 import { ErrorMessage } from '../../../common/ErrorMessage/ErrorMessage';
-import { useSelector } from 'react-redux';
-import { getAuthorsList } from '../../../store/selectors';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+	getAuthorsList,
+	getAuthorsStateStatus,
+	getCourseFormAuthorsName,
+	getErrorMessages,
+} from '../../../store/selectors';
+import { AppDispatch } from 'src/store';
+import { addAuthor, fetchAuthors } from '../../../store/thunks';
+import { stateStatus } from '../../../store/slices/constants';
+import {
+	removeCourseFormAuthors,
+	setCourseFormAuthors,
+} from '../../../store/slices/courseForm/courseFormSlice';
 
 const style = {
 	sectionTitle: `text-[#333E48] font-bold text-3xl mb-6 capitalize`,
@@ -17,16 +29,31 @@ const style = {
 	createCourseWrapper: `bg-[#F7F7F7] h-full py-20 px-40 flex flex-col`,
 };
 
-export const CourseAuthors = ({
-	newAuthor,
-	setNewAuthor,
-	createNewAuthor,
-	addAuthorName,
-	newCourseAuthors,
-	deleteAuthorName,
-	errorMessages,
-}) => {
+export const CourseAuthors = () => {
+	const dispatch = useDispatch<AppDispatch>();
+
+	const authorsStatus = useSelector(getAuthorsStateStatus);
 	const authorsList = useSelector(getAuthorsList);
+	const courseFormAuthors = useSelector(getCourseFormAuthorsName);
+	const errorMessages = useSelector(getErrorMessages);
+
+	const [newAuthor, setNewAuthor] = useState<string>('');
+
+	useEffect(() => {
+		if (authorsStatus === stateStatus.idle) {
+			dispatch(fetchAuthors());
+		}
+	}, [authorsStatus, dispatch]);
+
+	useEffect(() => {
+		dispatch(fetchAuthors());
+	}, [dispatch]);
+
+	const createNewAuthor = () => {
+		dispatch(addAuthor({ name: newAuthor.trim() }));
+		setNewAuthor('');
+	};
+
 	return (
 		<div className='flex justify-between'>
 			<div>
@@ -51,7 +78,7 @@ export const CourseAuthors = ({
 								key={author.id}
 								id={author.id}
 								authorName={author.name}
-								editAuthorList={addAuthorName}
+								editAuthorList={setCourseFormAuthors}
 							/>
 						);
 					})}
@@ -60,15 +87,15 @@ export const CourseAuthors = ({
 
 			<div className={style.newCourseAuthorsContainer}>
 				<h3 className='text-2xl font-bold'>Course Authors</h3>
-				{newCourseAuthors.length
-					? newCourseAuthors.map((authorName) => {
+				{courseFormAuthors.length
+					? courseFormAuthors.map((author) => {
 							return (
 								<AuthorItem
-									key={authorName.id}
-									id={authorName.id}
-									authorName={authorName.name}
+									key={author.id}
+									id={author.id}
+									authorName={author.name}
 									type='delete'
-									editAuthorList={deleteAuthorName}
+									editAuthorList={removeCourseFormAuthors}
 								/>
 							);
 						})

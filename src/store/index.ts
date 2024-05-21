@@ -3,8 +3,9 @@ import coursesReducer from './slices/courses/coursesSlice';
 import authorsReducer from './slices/authors/authorsSlice';
 import userReducer from './slices/user/userSlice';
 import { filterReducer } from './slices/filter/filterSlice';
-import { newCourseReducer } from './slices/newCourse/newCourseSlice';
-import { newCourseAuthorsReducer } from './slices/newCourseAuthors/newCourseAuthorsSlice';
+import { courseFormReducer } from './slices/courseForm/courseFormSlice';
+import { errorMessagesReducer } from './slices/errorMessages/errorMessagesSlice';
+
 import {
 	persistStore,
 	persistReducer,
@@ -25,8 +26,8 @@ const persistConfig = {
 		'authors',
 		'user',
 		'filter',
-		'newCourse',
-		'newCourseAuthors',
+		'courseForm',
+		'errorMessages',
 	],
 };
 const userPersistConfig = {
@@ -40,8 +41,8 @@ const rootReducer = combineReducers({
 	authors: authorsReducer,
 	user: persistReducer(userPersistConfig, userReducer),
 	filter: filterReducer,
-	newCourse: newCourseReducer,
-	newCourseAuthors: newCourseAuthorsReducer,
+	courseForm: courseFormReducer,
+	errorMessages: errorMessagesReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

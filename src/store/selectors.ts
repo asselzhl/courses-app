@@ -54,8 +54,20 @@ export const getFilteredCourses = createSelector(
 	}
 );
 
-// New Course selectors
-export const getNewCourseData = (state: RootState) => state.newCourse;
+// Course Form selectors
+export const getCourseFormData = (state: RootState) => state.courseForm;
 
-// New Course Authors selectors
-export const getNewCourseAuthors = (state: RootState) => state.newCourseAuthors;
+export const getCourseFormAuthorsIDs = (state: RootState) =>
+	state.courseForm.authors; // id[]
+
+export const getCourseFormAuthorsName = createSelector(
+	[getAuthorsList, getCourseFormAuthorsIDs],
+	(authors, authorsIDs) => {
+		return authorsIDs.map((id) => {
+			return authors.find((author) => author.id === id);
+		});
+	}
+);
+
+// Error Messages selectors
+export const getErrorMessages = (state: RootState) => state.errorMessages;

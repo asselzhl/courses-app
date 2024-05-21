@@ -3,9 +3,9 @@ import { FormFieldWithError } from '../../../common/FormFieldWithError/FormField
 import { TextareaWithError } from '../../../common/TextareaWithError/TextareaWithError';
 import { getCourseDuration } from '../../../helpers/getCourseDuration';
 import { useDispatch, useSelector } from 'react-redux';
-import { getNewCourseData } from '../../../store/selectors';
+import { getErrorMessages, getCourseFormData } from '../../../store/selectors';
 import { AppDispatch } from '../../../store';
-import { setNewCourseData } from '../../../store/slices/newCourse/newCourseSlice';
+import { setCourseFormData } from '../../../store/slices/courseForm/courseFormSlice';
 
 const style = {
 	sectionTitle: `text-[#333E48] font-bold text-3xl mb-6 capitalize`,
@@ -18,17 +18,15 @@ const style = {
 	createCourseWrapper: `bg-[#F7F7F7] h-full py-20 px-40 flex flex-col`,
 };
 
-export const CourseDetails = ({
-	//   newCourseData,
-	errorMessages,
-}) => {
-	const newCourseData = useSelector(getNewCourseData);
+export const CourseDetails = () => {
+	const courseFormData = useSelector(getCourseFormData);
+	const errorMessages = useSelector(getErrorMessages);
 	const dispatch = useDispatch<AppDispatch>();
 
-	const handleNewCourseDataChange = (
+	const handleCourseFormDataChange = (
 		e: React.ChangeEvent<HTMLInputElement>
 	) => {
-		dispatch(setNewCourseData({ [e.target.name]: e.target.value }));
+		dispatch(setCourseFormData({ [e.target.name]: e.target.value }));
 	};
 
 	return (
@@ -38,22 +36,22 @@ export const CourseDetails = ({
 			<FormFieldWithError
 				type='text'
 				labelText='Title'
-				placeholderText='Course Titlte'
+				placeholderText='Course Title'
 				name='title'
-				value={newCourseData.title}
+				value={courseFormData.title}
 				inputID='courseName'
 				errorMessage={errorMessages.title}
-				onChange={handleNewCourseDataChange}
+				onChange={handleCourseFormDataChange}
 			/>
 
 			<TextareaWithError
 				labelText='Description'
 				placeholderText='Description'
 				name='description'
-				value={newCourseData.description}
+				value={courseFormData.description}
 				textareaID='description'
 				errorMessage={errorMessages.description}
-				onChange={handleNewCourseDataChange}
+				onChange={handleCourseFormDataChange}
 			/>
 
 			<div className={style.durationContainer}>
@@ -62,15 +60,15 @@ export const CourseDetails = ({
 					labelText='Duration'
 					placeholderText='Duration'
 					name='duration'
-					value={newCourseData.duration}
+					value={courseFormData.duration}
 					inputID='duration'
 					errorMessage={errorMessages.duration}
-					onChange={handleNewCourseDataChange}
+					onChange={handleCourseFormDataChange}
 				/>
 
 				<p>
-					{newCourseData.duration
-						? getCourseDuration(newCourseData.duration)
+					{courseFormData.duration
+						? getCourseDuration(courseFormData.duration)
 						: '00:00 hours'}
 				</p>
 			</div>

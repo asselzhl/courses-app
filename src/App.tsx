@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import { Registration } from './components/Registration/Registration.tsx';
 import { Login } from './components/Login/Login.tsx';
 import { Courses } from './components/Courses/Courses.tsx';
-import { CreateCourse } from './components/CourseForm/CourseForm.tsx';
+import { CourseForm } from './components/CourseForm/CourseForm.tsx';
 import { CourseInfo } from './components/CourseInfo/CourseInfo.tsx';
 import { PrivateRoute } from './components/PrivateRoute/PrivateRoute.tsx';
 import { useSelector } from 'react-redux';
@@ -27,7 +27,7 @@ export function App() {
 		},
 		{
 			path: routePaths.addCourse,
-			element: <PrivateRoute children={<CreateCourse />} />,
+			element: <PrivateRoute children={<CourseForm />} />,
 		},
 		{
 			path: routePaths.courseDetail,
@@ -35,7 +35,7 @@ export function App() {
 		},
 		{
 			path: routePaths.updateCourse,
-			element: <PrivateRoute children={<CreateCourse />} />,
+			element: <PrivateRoute children={<CourseForm />} />,
 		},
 	];
 
