@@ -6,6 +6,9 @@ import { Button } from '../../common/Button/Button';
 
 import { validateInputValues } from '../../helpers/validateInputValues';
 import { createRequest } from '../../helpers/apiServices';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from 'src/store';
+import { authenticateUser } from '../../store/user/userSlice';
 
 const style = {
 	blockTitle: `text-[#333E48] font-bold text-3xl mb-6`,
@@ -17,7 +20,7 @@ interface ErrorMessages {
 	[key: string]: string;
 }
 
-export const Login = ({ setIsLoggedIn }) => {
+export const Login = () => {
 	const navigate = useNavigate();
 
 	const [errorMessages, setErrorMessages] = useState<ErrorMessages>({});
@@ -27,6 +30,8 @@ export const Login = ({ setIsLoggedIn }) => {
 	};
 
 	const [userData, setUserData] = useState(initialUserData);
+
+	const dispatch = useDispatch<AppDispatch>();
 
 	const handleUserDataChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setUserData((prevValues) => {
@@ -46,11 +51,10 @@ export const Login = ({ setIsLoggedIn }) => {
 				(response) => {
 					if (response.successful) {
 						localStorage.setItem('userToken', response.result);
-						localStorage.setItem('username', response.user.name);
-						setIsLoggedIn(true);
+
+						dispatch(authenticateUser(userData));
 
 						navigate('/courses');
-						setUserData(initialUserData);
 					}
 				}
 			);

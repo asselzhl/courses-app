@@ -1,5 +1,3 @@
-import { mockedCoursesList, mockedAuthorsList } from './constants';
-import { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 import { Registration } from './components/Registration/Registration.tsx';
@@ -9,69 +7,33 @@ import { CreateCourse } from './components/CreateCourse/CreateCourse.tsx';
 import { CourseInfo } from './components/CourseInfo/CourseInfo.tsx';
 import { Layout } from './Layout';
 
-interface AuthorsListItem {
-	id: string;
-	name: string;
-}
-interface CoursesListItem {
-	id: string;
-	title: string;
-	description: string;
-	creationDate: string;
-	duration: number;
-	authors: string[];
-}
-
 export function App() {
-	const [authorsList, setAuthorsList] =
-		useState<AuthorsListItem[]>(mockedAuthorsList);
-	const [coursesList, setCoursesList] =
-		useState<CoursesListItem[]>(mockedCoursesList);
-
 	const isUserTokenPresent = !!localStorage.getItem('userToken');
-
-	const [isLoggedIn, setIsLoggedIn] = useState<boolean>(isUserTokenPresent);
 
 	const routesConfig = [
 		{
 			path: '/',
-			element: isUserTokenPresent ? (
-				<Courses authorsList={authorsList} coursesList={coursesList} />
-			) : (
-				<Login setIsLoggedIn={setIsLoggedIn} />
-			),
+			element: isUserTokenPresent ? <Courses /> : <Login />,
 		},
-		{ path: 'login', element: <Login setIsLoggedIn={setIsLoggedIn} /> },
+		{ path: 'login', element: <Login /> },
 		{ path: 'registration', element: <Registration /> },
 		{
 			path: 'courses',
-			element: <Courses authorsList={authorsList} coursesList={coursesList} />,
+			element: <Courses />,
 		},
 		{
 			path: 'courses/add',
-			element: (
-				<CreateCourse
-					authorsList={authorsList}
-					setAuthorsList={setAuthorsList}
-					setCoursesList={setCoursesList}
-				/>
-			),
+			element: <CreateCourse />,
 		},
 		{
 			path: 'courses/:courseId',
-			element: (
-				<CourseInfo authorsList={authorsList} coursesList={coursesList} />
-			),
+			element: <CourseInfo />,
 		},
 	];
 
 	return (
 		<Routes>
-			<Route
-				element={
-					<Layout isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
-				}
-			>
+			<Route element={<Layout />}>
 				{routesConfig.map((route) => {
 					return (
 						<Route key={route.path} path={route.path} element={route.element} />

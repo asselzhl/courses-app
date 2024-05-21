@@ -1,7 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 import { Button } from '../../../../common/Button/Button';
+import { AppDispatch } from 'src/store';
+import { removeCourse } from '../../../../store/courses/coursesSlice';
 
 const style = {
 	courseCardWrapper: `p-8 bg-[#FFFFFF] rounded border-l-8 border-[#333E48] shadow-lg shadow-slate-300 mb-8`,
@@ -31,6 +34,11 @@ export const CourseCard = ({
 		{ title: 'Duration: ', value: duration },
 		{ title: 'Created: ', value: creationDate },
 	];
+	const dispatch = useDispatch<AppDispatch>();
+
+	const handleDeleteButton = () => {
+		dispatch(removeCourse(id));
+	};
 
 	return (
 		<li className={style.courseCardWrapper}>
@@ -49,10 +57,12 @@ export const CourseCard = ({
 							</p>
 						))}
 					</div>
-					<div>
-						<Link to={id}>
+					<div className='flex gap-3 items-center flex-wrap'>
+						<Link to={`courses/${id}`}>
 							<Button text='show course' onClick={() => {}} />
 						</Link>
+						<Button text='delete' onClick={handleDeleteButton} />
+						<Button text='update' onClick={() => {}} />
 					</div>
 				</div>
 			</div>

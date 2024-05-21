@@ -29,7 +29,8 @@ export const AuthorItem = ({
 }: AuthorItemProps) => {
 	const config = authorItemMap[type];
 
-	const handleButtonClick = () => {
+	const handleButtonClick = (e) => {
+		e.preventDefault();
 		editAuthorList(id);
 	};
 	return (
