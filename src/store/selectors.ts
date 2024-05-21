@@ -58,7 +58,7 @@ export const getFilteredCourses = createSelector(
 export const getCourseFormData = (state: RootState) => state.courseForm;
 
 export const getCourseFormAuthorsIDs = (state: RootState) =>
-	state.courseForm.authors; // id[]
+	state.courseForm.authors;
 
 export const getCourseFormAuthorsName = createSelector(
 	[getAuthorsList, getCourseFormAuthorsIDs],

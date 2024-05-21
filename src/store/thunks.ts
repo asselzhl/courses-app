@@ -4,7 +4,7 @@ import axios from 'axios';
 interface CoursesListItem {
 	title: string;
 	description: string;
-	duration: number | string;
+	duration: number;
 	authors: string[];
 }
 interface UpdateCourseProps {
@@ -74,12 +74,12 @@ export const fetchCourses = createAsyncThunk(
 
 export const addCourse = createAsyncThunk(
 	'addCourse',
-	async (newCourseData: CoursesListItem, thunkApi) => {
+	async (courseFormData: CoursesListItem, thunkApi) => {
 		const userToken = getUserToken();
 		try {
 			const data = await agent.post(
 				endpoints.courses.addCourse,
-				newCourseData,
+				courseFormData,
 				{ headers: { Authorization: userToken } }
 			);
 			return data;

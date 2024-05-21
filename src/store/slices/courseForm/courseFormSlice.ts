@@ -18,7 +18,12 @@ export const courseFormSlice = createSlice({
 	initialState,
 	reducers: {
 		setCourseFormData: (state, action) => {
-			return { ...state, ...action.payload };
+			const { payload } = action;
+
+			if (payload.duration !== undefined && typeof payload.duration !== 'number') {
+				payload.duration = Number(payload.duration);
+			}
+			return { ...state, ...payload };
 		},
 		clearCourseFormData: (state) => {
 			state = initialState;
