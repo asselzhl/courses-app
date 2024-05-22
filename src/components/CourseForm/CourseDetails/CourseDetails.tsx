@@ -3,9 +3,10 @@ import { FormFieldWithError } from '../../../common/FormFieldWithError/FormField
 import { TextareaWithError } from '../../../common/TextareaWithError/TextareaWithError';
 import { getCourseDuration } from '../../../helpers/getCourseDuration';
 import { useDispatch, useSelector } from 'react-redux';
-import { getErrorMessages, getCourseFormData } from '../../../store/selectors';
+import { getCourseFormData } from '../../../store/selectors';
 import { AppDispatch } from '../../../store';
 import { setCourseFormData } from '../../../store/slices/courseForm/courseFormSlice';
+import { formFieldsMap } from '../../../common/FormFieldWithError/formFieldsMap';
 
 const style = {
 	sectionSubtitle: `text-2xl font-bold`,
@@ -14,7 +15,6 @@ const style = {
 
 export const CourseDetails = () => {
 	const courseFormData = useSelector(getCourseFormData);
-	const errorMessages = useSelector(getErrorMessages);
 	const dispatch = useDispatch<AppDispatch>();
 
 	const courseDuration = getCourseDuration(courseFormData.duration);
@@ -30,35 +30,21 @@ export const CourseDetails = () => {
 			<h3 className={style.sectionSubtitle}>Main Info</h3>
 
 			<FormFieldWithError
-				type='text'
-				labelText='Title'
-				placeholderText='Course Title'
-				name='title'
+				name={formFieldsMap.title.name}
 				value={courseFormData.title}
-				inputID='courseName'
-				errorMessage={errorMessages.title}
 				onChange={handleCourseFormDataChange}
 			/>
 
 			<TextareaWithError
-				labelText='Description'
-				placeholderText='Description'
-				name='description'
+				name={formFieldsMap.description.name}
 				value={courseFormData.description}
-				textareaID='description'
-				errorMessage={errorMessages.description}
 				onChange={handleCourseFormDataChange}
 			/>
 
 			<div className={style.durationContainer}>
 				<FormFieldWithError
-					type='number'
-					labelText='Duration'
-					placeholderText='Duration'
-					name='duration'
+					name={formFieldsMap.duration.name}
 					value={courseFormData.duration}
-					inputID='duration'
-					errorMessage={errorMessages.duration}
 					onChange={handleCourseFormDataChange}
 				/>
 

@@ -6,6 +6,7 @@ import { FormFieldWithError } from '../../common/FormFieldWithError/FormFieldWit
 import { Button } from '../../common/Button/Button';
 
 import { validateInputValues } from '../../helpers/validateInputValues';
+import { formFieldsMap } from '../../common/FormFieldWithError/formFieldsMap';
 
 const style = {
 	blockTitle: `text-[#333E48] font-bold text-3xl mb-6`,
@@ -61,34 +62,22 @@ export const Registration = () => {
 
 				<form onSubmit={handleFormSubmit} className={style.formContainer}>
 					<FormFieldWithError
-						type='text'
-						labelText='Name'
-						placeholderText='Name'
 						value={newUserData.name}
-						name='name'
-						inputID='name'
+						name={formFieldsMap.fullname.name}
 						errorMessage={errorMessages.name}
 						onChange={handleNewUserDataChange}
 					/>
 
 					<FormFieldWithError
-						type='email'
-						labelText='Email'
-						placeholderText='Email'
 						value={newUserData.email}
-						name='email'
-						inputID='email'
+						name={formFieldsMap.email.name}
 						errorMessage={errorMessages.email}
 						onChange={handleNewUserDataChange}
 					/>
 
 					<FormFieldWithError
-						type='password'
-						labelText='Password'
-						placeholderText='Password'
 						value={newUserData.password}
-						name='password'
-						inputID='password'
+						name={formFieldsMap.password.name}
 						errorMessage={errorMessages.password}
 						onChange={handleNewUserDataChange}
 					/>

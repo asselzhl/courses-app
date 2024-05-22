@@ -1,47 +1,38 @@
 import React from 'react';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
+import { formFieldsMap } from './formFieldsMap';
+import { useSelector } from 'react-redux';
+import { getErrorMessages } from '../../store/selectors';
 
 const style = {
 	pageInput: `py-3 px-4 leading-6 rounded border border-[#CFCFCF] focus:outline-[#007298] w-full`,
 };
 
 interface InputProps {
-	type: string;
-	labelText: string;
-	placeholderText: string;
 	name: string;
 	value: string | number;
-	inputID: string;
-	errorMessage?: string;
-	/* eslint-disable */
-  onChange: (e?: any) => void;
+	onChange: (e?) => void;
 }
 
-export const FormFieldWithError = ({
-  type,
-  labelText,
-  placeholderText,
-  name,
-  value,
-  inputID,
-  errorMessage,
-  onChange,
-}: InputProps) => {
-  return (
-    <div>
-      <label htmlFor={inputID} className="font-bold capitalize">
-        {labelText}
-        <input
-          type={type}
-          id={inputID}
-          placeholder={placeholderText}
-          name={name}
-          value={value}
-          className={style.pageInput}
-          onChange={onChange}
-        />
-      </label>
-	  <ErrorMessage errorMessage={errorMessage} />
-    </div>
-  );
+export const FormFieldWithError = ({ name, value, onChange }: InputProps) => {
+	const config = formFieldsMap[name];
+
+	const errorMessages = useSelector(getErrorMessages);
+	return (
+		<div>
+			<label htmlFor={config.inputID} className='font-bold capitalize'>
+				{config.labelText}
+				<input
+					type={config.type}
+					id={config.inputID}
+					placeholder={config.placeholderText}
+					name={config.name}
+					value={value}
+					className={style.pageInput}
+					onChange={onChange}
+				/>
+			</label>
+			<ErrorMessage errorMessage={errorMessages[name]} />
+		</div>
+	);
 };

@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from 'src/store';
 import { authenticateUser } from '../../store/thunks';
 import { routePaths } from '../../routePaths';
+import { formFieldsMap } from '../../common/FormFieldWithError/formFieldsMap';
 
 const style = {
 	blockTitle: `text-[#333E48] font-bold text-3xl mb-6`,
@@ -59,23 +60,15 @@ export const Login = () => {
 
 				<form className={style.formContainer} onSubmit={handleFormSubmit}>
 					<FormFieldWithError
-						type='email'
-						labelText='Email'
-						name='email'
-						placeholderText='Email'
+						name={formFieldsMap.email.name}
 						value={userData.email}
-						inputID='email'
 						errorMessage={errorMessages.email}
 						onChange={handleUserDataChange}
 					/>
 
 					<FormFieldWithError
-						type='password'
-						labelText='Password'
-						name='password'
-						placeholderText='Password'
+						name={formFieldsMap.password.name}
 						value={userData.password}
-						inputID='password'
 						errorMessage={errorMessages.password}
 						onChange={handleUserDataChange}
 					/>

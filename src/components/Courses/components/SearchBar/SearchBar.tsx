@@ -5,6 +5,7 @@ import { Button } from '../../../../common/Button/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { getFilterValue } from '../../../../store/selectors';
 import { setFilterValue } from '../../../../store/slices/filter/filterSlice';
+import { formFieldsMap } from '../../../../common/FormFieldWithError/formFieldsMap';
 
 export const SearchBar = () => {
 	const filterValue = useSelector(getFilterValue);
@@ -16,12 +17,8 @@ export const SearchBar = () => {
 	return (
 		<form className='flex gap-x-4 w-[50%]'>
 			<FormFieldWithError
-				type='text'
-				labelText=''
 				value={filterValue}
-				name=''
-				placeholderText='Search'
-				inputID=''
+				name={formFieldsMap.searchCourse.name}
 				onChange={handleSearchInputChange}
 			/>
 			<Button type='submit' text='Search' onClick={() => {}} />
