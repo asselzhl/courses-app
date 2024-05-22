@@ -23,10 +23,7 @@ export const courseFormSlice = createSlice({
 			const isDurationDefined = payload.duration !== undefined;
 			const isDurationNotNumber = typeof payload.duration !== 'number';
 
-			if (
-				isDurationDefined &&
-				isDurationNotNumber
-			) {
+			if (isDurationDefined && isDurationNotNumber) {
 				payload.duration = Number(payload.duration);
 			}
 			return { ...state, ...payload };
