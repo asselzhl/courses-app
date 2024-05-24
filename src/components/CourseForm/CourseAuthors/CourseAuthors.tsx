@@ -42,10 +42,6 @@ export const CourseAuthors = () => {
 		}
 	}, [authorsStatus, dispatch]);
 
-	useEffect(() => {
-		dispatch(fetchAuthors());
-	}, [dispatch]);
-
 	const createNewAuthor = () => {
 		dispatch(addAuthor({ name: newAuthor.trim() }));
 		setNewAuthor('');

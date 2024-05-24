@@ -7,9 +7,21 @@ interface FormField {
 	name: string;
 	inputID: string;
 }
-interface FormFieldsMap {
-	[key: string]: FormField;
-}
+
+type FormFieldNames =
+	| 'title'
+	| 'duration'
+	| 'createAuthor'
+	| 'searchCourse'
+	| 'email'
+	| 'password'
+	| 'fullname'
+	| 'description';
+
+type FormFieldsMap = {
+	[key in FormFieldNames]: FormField;
+};
+
 export const formFieldsMap: FormFieldsMap = {
 	title: {
 		type: 'text',

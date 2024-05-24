@@ -1,5 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchCourses } from '../../thunks/coursesThunk';
+import {
+	addCourse,
+	deleteCourse,
+	fetchCourses,
+} from '../../thunks/coursesThunk';
 import { StateStatus, Error } from '../types';
 import { stateStatus } from '../constants';
 import { handlePending, handleRejected } from '../reducersUtils';
@@ -36,7 +40,23 @@ export const coursesSlice = createSlice({
 				state.status = stateStatus.succeeded;
 				state.data = action.payload.data.result;
 			})
-			.addCase(fetchCourses.rejected, handleRejected);
+			.addCase(fetchCourses.rejected, handleRejected)
+			.addCase(addCourse.pending, handlePending)
+			.addCase(addCourse.fulfilled, (state, action) => {
+				state.status = stateStatus.succeeded;
+				state.data.push(action.payload.data.result);
+				return state;
+			})
+			.addCase(addCourse.rejected, handleRejected)
+			.addCase(deleteCourse.pending, handlePending)
+			.addCase(deleteCourse.fulfilled, (state, action) => {
+				state.status = stateStatus.succeeded;
+				state.data = state.data.filter(
+					(course) => course.id !== action.payload.data.result
+				);
+				return state;
+			})
+			.addCase(deleteCourse.rejected, handleRejected);
 	},
 });
 

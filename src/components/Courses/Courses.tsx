@@ -28,7 +28,9 @@ export const Courses = () => {
 	const currentUserRole = useSelector(getCurrentUserRole);
 
 	useEffect(() => {
-		dispatch(fetchCourses());
+		if (coursesStatus === stateStatus.idle) {
+			dispatch(fetchCourses());
+		}
 	}, [dispatch]);
 
 	if (coursesStatus === stateStatus.succeeded) {
