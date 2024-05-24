@@ -3,7 +3,11 @@ import { createSlice } from '@reduxjs/toolkit';
 import { UserState } from '../types';
 import { adminCredentials, stateStatus, userRoles } from '../constants';
 import { handlePending, handleRejected } from '../reducersUtils';
-import { authenticateUser, getCurrentUser, logUserOut } from '../../thunks/userThunk';
+import {
+	authenticateUser,
+	getCurrentUser,
+	logUserOut,
+} from '../../thunks/userThunk';
 
 const initialState: UserState = {
 	status: stateStatus.idle,

@@ -38,10 +38,10 @@ const getUserToken = () => {
 };
 
 export const agent = axios.create({
-	baseURL: 'http://localhost:4000'
+	baseURL: 'http://localhost:4000',
 });
 
-agent.interceptors.request.use(config => {
+agent.interceptors.request.use((config) => {
 	const userToken = getUserToken();
 
 	if (userToken) {

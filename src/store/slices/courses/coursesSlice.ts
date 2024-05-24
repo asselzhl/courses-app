@@ -4,7 +4,6 @@ import { StateStatus, Error } from '../types';
 import { stateStatus } from '../constants';
 import { handlePending, handleRejected } from '../reducersUtils';
 
-
 interface CoursesListItem {
 	title: string;
 	description: string;
