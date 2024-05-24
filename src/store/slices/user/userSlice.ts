@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { authenticateUser, getCurrentUser, logUserOut } from '../../thunks';
+
 import { UserState } from '../types';
 import { adminCredentials, stateStatus, userRoles } from '../constants';
 import { handlePending, handleRejected } from '../reducersUtils';
+import { authenticateUser, getCurrentUser, logUserOut } from '../../thunks/userThunk';
 
 const initialState: UserState = {
 	status: stateStatus.idle,

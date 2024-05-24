@@ -17,6 +17,9 @@ export const getCurrentUserName = (state: RootState) => {
 export const getCurrentUserRole = (state: RootState) => {
 	return state.user.role;
 };
+export const getCurrentUserToken = (state: RootState) => {
+	return state.user.token;
+};
 
 // Courses selectors
 export const getCoursesState = (state: RootState) => {

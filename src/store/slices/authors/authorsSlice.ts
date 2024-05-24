@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchAuthors } from '../../thunks';
+
 import { StateStatus, Error } from '../types';
 import { stateStatus } from '../constants';
 import { handlePending, handleRejected } from '../reducersUtils';
+import { fetchAuthors } from '../../thunks/authorsThunk';
 
 interface AuthorsListItem {
 	name: string;
