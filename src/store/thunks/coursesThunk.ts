@@ -9,7 +9,7 @@ interface CoursesListItem {
 }
 
 interface UpdateCourseProps {
-	courseFormData: CoursesListItem;
+	courseData: CoursesListItem;
 	courseId: string;
 }
 
@@ -42,11 +42,12 @@ export const addCourse = createAsyncThunk(
 
 export const updateCourse = createAsyncThunk(
 	'updateCourse',
-	async (courseData: UpdateCourseProps, thunkApi) => {
+	async (updatedCourseData: UpdateCourseProps, thunkApi) => {
+		const endpoint = endpoints.courses.base + updatedCourseData.courseId;
 		try {
 			const data = await agent.put(
-				`${endpoints.courses.base}${courseData.courseId}`,
-				courseData.courseFormData
+				endpoint,
+				updatedCourseData.courseData
 			);
 			return data;
 		} catch (error) {
@@ -58,8 +59,9 @@ export const updateCourse = createAsyncThunk(
 export const deleteCourse = createAsyncThunk(
 	'deleteCourse',
 	async (courseId: string, thunkApi) => {
+		const endpoint = endpoints.courses.base + courseId;
 		try {
-			const data = await agent.delete(`${endpoints.courses.base}${courseId}`);
+			const data = await agent.delete(endpoint);
 			return data;
 		} catch (error) {
 			return thunkApi.rejectWithValue(error);

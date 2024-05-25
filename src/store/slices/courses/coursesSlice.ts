@@ -3,6 +3,7 @@ import {
 	addCourse,
 	deleteCourse,
 	fetchCourses,
+	updateCourse,
 } from '../../thunks/coursesThunk';
 import { StateStatus, Error } from '../types';
 import { stateStatus } from '../constants';
@@ -56,7 +57,17 @@ export const coursesSlice = createSlice({
 				);
 				return state;
 			})
-			.addCase(deleteCourse.rejected, handleRejected);
+			.addCase(deleteCourse.rejected, handleRejected)
+			.addCase(updateCourse.pending, handlePending)
+			.addCase(updateCourse.fulfilled, (state, action) => {
+				state.status = stateStatus.succeeded;
+				const updatedCourse = action.payload.data.result;
+				state.data = state.data.map(course =>
+					course.id === updatedCourse.id ? updatedCourse : course
+				);
+				return state;
+			})
+			.addCase(updateCourse.rejected, handleRejected);
 	},
 });
 
