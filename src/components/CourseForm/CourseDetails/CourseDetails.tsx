@@ -3,7 +3,7 @@ import { FormFieldWithError } from '../../../common/FormFieldWithError/FormField
 import { TextareaWithError } from '../../../common/TextareaWithError/TextareaWithError';
 import { getCourseDuration } from '../../../helpers/getCourseDuration';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCourseFormData } from '../../../store/selectors';
+import { getCourseFormData, getErrorMessages } from '../../../store/selectors';
 import { AppDispatch } from '../../../store';
 import { setCourseFormData } from '../../../store/slices/courseForm/courseFormSlice';
 import { formFieldsMap } from '../../../common/FormFieldWithError/formFieldsMap';
@@ -19,6 +19,8 @@ export const CourseDetails = () => {
 
 	const courseDuration = getCourseDuration(courseFormData.duration);
 
+	const errorMessages = useSelector(getErrorMessages);
+
 	const handleCourseFormDataChange = (
 		e: React.ChangeEvent<HTMLInputElement>
 	) => {
@@ -32,12 +34,14 @@ export const CourseDetails = () => {
 			<FormFieldWithError
 				name={formFieldsMap.title.name}
 				value={courseFormData.title}
+				errorMessages={errorMessages}
 				onChange={handleCourseFormDataChange}
 			/>
 
 			<TextareaWithError
 				name={formFieldsMap.description.name}
 				value={courseFormData.description}
+				errorMessages={errorMessages}
 				onChange={handleCourseFormDataChange}
 			/>
 
@@ -45,6 +49,7 @@ export const CourseDetails = () => {
 				<FormFieldWithError
 					name={formFieldsMap.duration.name}
 					value={courseFormData.duration}
+					errorMessages={errorMessages}
 					onChange={handleCourseFormDataChange}
 				/>
 

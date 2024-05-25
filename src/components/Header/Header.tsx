@@ -29,9 +29,8 @@ export const Header = () => {
 		dispatch(getCurrentUser());
 	}, [dispatch]);
 
-	const handleButtonClick = () => {
+	const handleLogoutClick = () => {
 		dispatch(logUserOut());
-		localStorage.clear();
 
 		navigate(routePaths.login);
 	};
@@ -41,7 +40,7 @@ export const Header = () => {
 			<Logo />
 			<div className={style.content}>
 				{isUserLoggedIn && <p>{userName}</p>}
-				{isUserLoggedIn && <Button text='logout' onClick={handleButtonClick} />}
+				{isUserLoggedIn && <Button text='logout' onClick={handleLogoutClick} />}
 			</div>
 		</header>
 	);

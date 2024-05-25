@@ -6,13 +6,14 @@ import { Button } from '../../common/Button/Button';
 
 import { validateInputValues } from '../../helpers/validateInputValues';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from 'src/store';
 
 import { routePaths } from '../../routePaths';
 import { formFieldsMap } from '../../common/FormFieldWithError/formFieldsMap';
 import { setErrorMessages } from '../../store/slices/errorMessages/errorMessagesSlice';
 import { authenticateUser } from '../../store/thunks/userThunk';
+import { getErrorMessages } from '../../store/selectors';
 
 const style = {
 	blockTitle: `text-[#333E48] font-bold text-3xl mb-6`,
@@ -22,6 +23,7 @@ const style = {
 
 export const Login = () => {
 	const navigate = useNavigate();
+	const errorMessages = useSelector(getErrorMessages);
 
 	const initialUserData = {
 		email: '',
@@ -59,12 +61,14 @@ export const Login = () => {
 					<FormFieldWithError
 						name={formFieldsMap.email.name}
 						value={userData.email}
+						errorMessages={errorMessages}
 						onChange={handleUserDataChange}
 					/>
 
 					<FormFieldWithError
 						name={formFieldsMap.password.name}
 						value={userData.password}
+						errorMessages={errorMessages}
 						onChange={handleUserDataChange}
 					/>
 

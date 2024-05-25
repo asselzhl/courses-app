@@ -15,7 +15,7 @@ type FormFieldNames =
 	| 'searchCourse'
 	| 'email'
 	| 'password'
-	| 'fullname'
+	| 'name'
 	| 'description';
 
 type FormFieldsMap = {
@@ -65,12 +65,12 @@ export const formFieldsMap: FormFieldsMap = {
 		name: 'password',
 		inputID: 'password',
 	},
-	fullname: {
+	name: {
 		type: 'text',
-		labelText: 'Fullname',
-		placeholderText: 'Fullname',
-		name: 'fullname',
-		inputID: 'fullname',
+		labelText: 'Name',
+		placeholderText: 'Name',
+		name: 'name',
+		inputID: 'name',
 	},
 	description: {
 		labelText: 'Description',
