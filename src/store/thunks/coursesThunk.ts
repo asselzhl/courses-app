@@ -45,10 +45,7 @@ export const updateCourse = createAsyncThunk(
 	async (updatedCourseData: UpdateCourseProps, thunkApi) => {
 		const endpoint = endpoints.courses.base + updatedCourseData.courseId;
 		try {
-			const data = await agent.put(
-				endpoint,
-				updatedCourseData.courseData
-			);
+			const data = await agent.put(endpoint, updatedCourseData.courseData);
 			return data;
 		} catch (error) {
 			return thunkApi.rejectWithValue(error);

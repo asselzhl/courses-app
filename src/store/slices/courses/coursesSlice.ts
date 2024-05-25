@@ -62,7 +62,7 @@ export const coursesSlice = createSlice({
 			.addCase(updateCourse.fulfilled, (state, action) => {
 				state.status = stateStatus.succeeded;
 				const updatedCourse = action.payload.data.result;
-				state.data = state.data.map(course =>
+				state.data = state.data.map((course) =>
 					course.id === updatedCourse.id ? updatedCourse : course
 				);
 				return state;
