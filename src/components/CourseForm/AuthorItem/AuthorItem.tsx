@@ -2,6 +2,7 @@ import React from 'react';
 
 import addButton from './assets/add.svg';
 import deleteButton from './assets/delete.svg';
+import { useDispatch } from 'react-redux';
 
 type AuthorItemKeys = 'add' | 'delete';
 
@@ -18,7 +19,7 @@ interface AuthorItemProps {
 	id: string;
 	authorName: string;
 	type?: AuthorItemKeys;
-	editAuthorList: (id: string) => void;
+	editAuthorList;
 }
 
 export const AuthorItem = ({
@@ -28,16 +29,18 @@ export const AuthorItem = ({
 	editAuthorList,
 }: AuthorItemProps) => {
 	const config = authorItemMap[type];
+	const dispatch = useDispatch();
 
-	const handleButtonClick = () => {
-		editAuthorList(id);
+	const handleButtonClick = (e) => {
+		e.preventDefault();
+		dispatch(editAuthorList(id));
 	};
 	return (
-		<div className='flex gap-x-3 items-center'>
+		<li className='flex gap-x-3 items-center'>
 			<p className='min-w-[150px]'>{authorName}</p>
 			<button onClick={handleButtonClick}>
 				<img src={config.src} alt='' />
 			</button>
-		</div>
+		</li>
 	);
 };

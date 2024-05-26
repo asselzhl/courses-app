@@ -1,7 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Button } from '../../../../common/Button/Button';
+import { AppDispatch } from 'src/store';
+import { getCurrentUserRole } from '../../../../store/selectors';
+import { userRoles } from '../../../../store/slices/constants';
+import { deleteCourse } from '../../../../store/thunks/coursesThunk';
 
 const style = {
 	courseCardWrapper: `p-8 bg-[#FFFFFF] rounded border-l-8 border-[#333E48] shadow-lg shadow-slate-300 mb-8`,
@@ -31,6 +36,13 @@ export const CourseCard = ({
 		{ title: 'Duration: ', value: duration },
 		{ title: 'Created: ', value: creationDate },
 	];
+	const dispatch = useDispatch<AppDispatch>();
+
+	const currentUserRole = useSelector(getCurrentUserRole);
+
+	const handleDeleteButton = () => {
+		dispatch(deleteCourse(id));
+	};
 
 	return (
 		<li className={style.courseCardWrapper}>
@@ -49,10 +61,18 @@ export const CourseCard = ({
 							</p>
 						))}
 					</div>
-					<div>
+					<div className='flex gap-3 items-center flex-wrap'>
 						<Link to={id}>
 							<Button text='show course' onClick={() => {}} />
 						</Link>
+						{currentUserRole === userRoles.admin ? (
+							<>
+								<Button text='delete' onClick={handleDeleteButton} />
+								<Link to={`update/${id}`}>
+									<Button text='update' onClick={() => {}} />
+								</Link>
+							</>
+						) : null}
 					</div>
 				</div>
 			</div>

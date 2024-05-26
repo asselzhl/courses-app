@@ -1,41 +1,46 @@
 import React from 'react';
 import { ErrorMessage } from '../ErrorMessage/ErrorMessage';
+import { formFieldsMap } from '../FormFieldWithError/formFieldsMap';
 
 const style = {
 	textarea: `py-3 px-4 leading-6 rounded border border-[#CFCFCF] focus:outline-[#007298] w-full`,
 };
 
+interface ErrorMessages {
+	title: string;
+	description: string;
+	duration: string;
+	authors: string;
+}
 interface TextareaProps {
-	labelText: string;
-	placeholderText: string;
 	name: string;
-	textareaID: string;
-	errorMessage?: string;
-	/* eslint-disable */ 
-	onChange: (e?: any) => void;
+	value: string;
+	errorMessages: ErrorMessages;
+	onChange: (e?) => void;
 }
 
 export const TextareaWithError = ({
-	labelText,
-	placeholderText,
 	name,
-	textareaID,
-	errorMessage,
+	value,
+	errorMessages,
 	onChange,
 }: TextareaProps) => {
+	const config = formFieldsMap[name];
+
 	return (
 		<div>
-		<label htmlFor={textareaID} className='font-bold capitalize'>
-			{labelText}
-			<textarea
-				id={textareaID}
-				placeholder={placeholderText}
-				name={name}
-				className={style.textarea}
-				onChange={onChange}
-			></textarea>
-		</label>
-		<ErrorMessage errorMessage={errorMessage} />
+			<label htmlFor={config.inputID} className='font-bold capitalize'>
+				{config.labelText}
+				<textarea
+					id={config.inputID}
+					placeholder={config.placeholderText}
+					name={config.name}
+					value={value}
+					className={style.textarea}
+					onChange={onChange}
+				></textarea>
+			</label>
+			<ErrorMessage errorMessage={errorMessages.description} />
 		</div>
 	);
 };

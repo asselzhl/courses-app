@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import { EmptyCourseList } from '../EmptyCourseList/EmptyCourseList';
@@ -6,60 +6,48 @@ import { SearchBar } from './components/SearchBar/SearchBar';
 import { Button } from '../../common/Button/Button';
 
 import { CourseList } from './components/CourseList/CourseList';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch } from 'src/store';
+import {
+	getCoursesStateStatus,
+	getCurrentUserRole,
+} from '../../store/selectors';
+import { routePaths } from '../../routePaths';
+import { stateStatus, userRoles } from '../../store/slices/constants';
+import { fetchCourses } from '../../store/thunks/coursesThunk';
 
 const style = {
 	coursesListWrapper: `bg-[#F7F7F7] h-full py-20 px-40 flex flex-col gap-y-8`,
 	emptyCourseListWrapper: `bg-[#F7F7F7] h-[90vh] py-20 px-40 flex flex-col gap-y-8 justify-center items-center`,
+	searchBarWrapper: `flex justify-between`,
 };
 
-interface AuthorsListItem {
-	id: string;
-	name: string;
-}
-interface CoursesListItem {
-	id: string;
-	title: string;
-	description: string;
-	creationDate: string;
-	duration: number;
-	authors: string[];
-}
-interface CoursesProps {
-	authorsList: AuthorsListItem[];
-	coursesList: CoursesListItem[];
-}
+export const Courses = () => {
+	const dispatch = useDispatch<AppDispatch>();
 
-export const Courses = ({ authorsList, coursesList }: CoursesProps) => {
-	const [searchValue, setSearchValue] = useState<string>('');
+	const coursesStatus = useSelector(getCoursesStateStatus);
+	const currentUserRole = useSelector(getCurrentUserRole);
 
-	const filteredCourses = coursesList.filter(
-		(course) =>
-			course.title.toLowerCase().includes(searchValue.toLowerCase().trim()) ||
-			course.id.toLowerCase().includes(searchValue.toLowerCase().trim())
-	);
+	useEffect(() => {
+		if (coursesStatus === stateStatus.idle) {
+			dispatch(fetchCourses());
+		}
+	}, [dispatch]);
 
-	const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setSearchValue(e.target.value);
-	};
-
-	if (coursesList.length) {
+	if (coursesStatus === stateStatus.succeeded) {
 		return (
 			<>
 				<div className={style.coursesListWrapper}>
-					<div className='flex justify-between'>
-						<SearchBar
-							searchValue={searchValue}
-							handleSearchInputChange={handleSearchInputChange}
-						/>
-						<Link to='/courses/add'>
-							<Button text='Add new course' onClick={() => {}} />
-						</Link>
+					<div className={style.searchBarWrapper}>
+						<SearchBar />
+						{currentUserRole === userRoles.admin ? (
+							<Link to={routePaths.addCourse}>
+								<Button text='Add new course' onClick={() => {}} />
+							</Link>
+						) : null}
 					</div>
 
-					<CourseList
-						filteredCourses={filteredCourses}
-						authorsList={authorsList}
-					/>
+					<CourseList />
 				</div>
 			</>
 		);

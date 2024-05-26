@@ -5,7 +5,15 @@ import { FormFieldWithError } from '../../common/FormFieldWithError/FormFieldWit
 import { Button } from '../../common/Button/Button';
 
 import { validateInputValues } from '../../helpers/validateInputValues';
-import { createRequest } from '../../helpers/apiServices';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch } from 'src/store';
+
+import { routePaths } from '../../routePaths';
+import { formFieldsMap } from '../../common/FormFieldWithError/formFieldsMap';
+import { setErrorMessages } from '../../store/slices/errorMessages/errorMessagesSlice';
+import { authenticateUser } from '../../store/thunks/userThunk';
+import { getErrorMessages } from '../../store/selectors';
 
 const style = {
 	blockTitle: `text-[#333E48] font-bold text-3xl mb-6`,
@@ -13,20 +21,18 @@ const style = {
 	loginFormWrapper: `bg-[#F7F7F7] h-screen py-20 flex flex-col justify-center items-center`,
 };
 
-interface ErrorMessages {
-	[key: string]: string;
-}
-
-export const Login = ({ setIsLoggedIn }) => {
+export const Login = () => {
 	const navigate = useNavigate();
+	const errorMessages = useSelector(getErrorMessages);
 
-	const [errorMessages, setErrorMessages] = useState<ErrorMessages>({});
 	const initialUserData = {
 		email: '',
 		password: '',
 	};
 
 	const [userData, setUserData] = useState(initialUserData);
+
+	const dispatch = useDispatch<AppDispatch>();
 
 	const handleUserDataChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setUserData((prevValues) => {
@@ -39,21 +45,11 @@ export const Login = ({ setIsLoggedIn }) => {
 
 		const errors = validateInputValues(userData, {});
 
-		setErrorMessages(errors);
+		dispatch(setErrorMessages(errors));
 
 		if (Object.keys(errors).length === 0) {
-			createRequest('http://localhost:4000/login', 'POST', userData).then(
-				(response) => {
-					if (response.successful) {
-						localStorage.setItem('userToken', response.result);
-						localStorage.setItem('username', response.user.name);
-						setIsLoggedIn(true);
-
-						navigate('/courses');
-						setUserData(initialUserData);
-					}
-				}
-			);
+			dispatch(authenticateUser(userData));
+			navigate(routePaths.courses);
 		}
 	};
 	return (
@@ -63,24 +59,16 @@ export const Login = ({ setIsLoggedIn }) => {
 
 				<form className={style.formContainer} onSubmit={handleFormSubmit}>
 					<FormFieldWithError
-						type='email'
-						labelText='Email'
-						name='email'
-						placeholderText='Email'
+						name={formFieldsMap.email.name}
 						value={userData.email}
-						inputID='email'
-						errorMessage={errorMessages.email}
+						errorMessages={errorMessages}
 						onChange={handleUserDataChange}
 					/>
 
 					<FormFieldWithError
-						type='password'
-						labelText='Password'
-						name='password'
-						placeholderText='Password'
+						name={formFieldsMap.password.name}
 						value={userData.password}
-						inputID='password'
-						errorMessage={errorMessages.password}
+						errorMessages={errorMessages}
 						onChange={handleUserDataChange}
 					/>
 
@@ -88,7 +76,7 @@ export const Login = ({ setIsLoggedIn }) => {
 
 					<div className='text-center'>
 						<span>If you have an account you may </span>
-						<Link className='font-bold' to='/registration'>
+						<Link className='font-bold' to={routePaths.registration}>
 							Registration
 						</Link>
 					</div>
