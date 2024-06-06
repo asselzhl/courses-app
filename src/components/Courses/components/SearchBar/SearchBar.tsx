@@ -3,9 +3,13 @@ import React from 'react';
 import { FormFieldWithError } from '../../../../common/FormFieldWithError/FormFieldWithError';
 import { Button } from '../../../../common/Button/Button';
 
-export const SearchBar = ({ searchValue, handleSearchInputChange }) => {
+export const SearchBar = ({
+	searchValue,
+	handleSearchInputChange,
+	handleSearchButtonClick,
+}) => {
 	return (
-		<div className='flex gap-x-4 w-[50%]'>
+		<form className='flex gap-x-4 w-[50%]' onSubmit={handleSearchButtonClick}>
 			<FormFieldWithError
 				type='text'
 				labelText=''
@@ -16,6 +20,6 @@ export const SearchBar = ({ searchValue, handleSearchInputChange }) => {
 				onChange={handleSearchInputChange}
 			/>
 			<Button text='Search' onClick={() => {}} />
-		</div>
+		</form>
 	);
 };
