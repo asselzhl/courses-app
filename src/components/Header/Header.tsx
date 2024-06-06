@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Logo } from './components/Logo/Logo';
 import { Button } from '../../common/Button/Button';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from 'src/store';
+import { AppDispatch } from 'src/store';
 
-import { logUserOut } from '../../store/user/userSlice';
+import {
+	getCurrentUserAuthStatus,
+	getCurrentUserName,
+} from '../../store/selectors';
+import { routePaths } from '../../routePaths';
+import { getCurrentUser, logUserOut } from '../../store/thunks/userThunk';
 
 const style = {
 	header: `container mx-auto flex justify-between items-center min-h-20`,
@@ -17,22 +22,25 @@ export const Header = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch<AppDispatch>();
 
-	const userData = useSelector((state: RootState) => state.user);
+	const isUserLoggedIn = useSelector(getCurrentUserAuthStatus);
+	const userName = useSelector(getCurrentUserName);
 
-	const handleButtonClick = () => {
-		localStorage.clear();
+	useEffect(() => {
+		dispatch(getCurrentUser());
+	}, [dispatch]);
+
+	const handleLogoutClick = () => {
 		dispatch(logUserOut());
-		navigate('/login');
+
+		navigate(routePaths.login);
 	};
 
 	return (
 		<header className={style.header}>
 			<Logo />
 			<div className={style.content}>
-				{localStorage.getItem('userToken') && <p>{userData.name}</p>}
-				{localStorage.getItem('userToken') && (
-					<Button text='logout' onClick={handleButtonClick} />
-				)}
+				{isUserLoggedIn && <p>{userName}</p>}
+				{isUserLoggedIn && <Button text='logout' onClick={handleLogoutClick} />}
 			</div>
 		</header>
 	);

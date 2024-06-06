@@ -3,43 +3,52 @@ import { Routes, Route } from 'react-router-dom';
 import { Registration } from './components/Registration/Registration.tsx';
 import { Login } from './components/Login/Login.tsx';
 import { Courses } from './components/Courses/Courses.tsx';
-import { CreateCourse } from './components/CreateCourse/CreateCourse.tsx';
+import { CourseForm } from './components/CourseForm/CourseForm.tsx';
 import { CourseInfo } from './components/CourseInfo/CourseInfo.tsx';
-import { Layout } from './Layout';
+import { PrivateRoute } from './components/PrivateRoute/PrivateRoute.tsx';
+import { useSelector } from 'react-redux';
+
+import { getCurrentUserAuthStatus } from './store/selectors.ts';
+import { Header } from './components/Header/Header.tsx';
+import { routePaths } from './routePaths.ts';
 
 export function App() {
-	const isUserTokenPresent = !!localStorage.getItem('userToken');
-
+	const isLoggedIn = useSelector(getCurrentUserAuthStatus);
 	const routesConfig = [
 		{
-			path: '/',
-			element: isUserTokenPresent ? <Courses /> : <Login />,
+			path: routePaths.index,
+			element: isLoggedIn ? <Courses /> : <Login />,
 		},
-		{ path: 'login', element: <Login /> },
-		{ path: 'registration', element: <Registration /> },
+		{ path: routePaths.login, element: <Login /> },
+		{ path: routePaths.registration, element: <Registration /> },
 		{
-			path: 'courses',
+			path: routePaths.courses,
 			element: <Courses />,
 		},
 		{
-			path: 'courses/add',
-			element: <CreateCourse />,
+			path: routePaths.addCourse,
+			element: <PrivateRoute children={<CourseForm />} />,
 		},
 		{
-			path: 'courses/:courseId',
+			path: routePaths.courseDetail,
 			element: <CourseInfo />,
+		},
+		{
+			path: routePaths.updateCourse,
+			element: <PrivateRoute children={<CourseForm />} />,
 		},
 	];
 
 	return (
-		<Routes>
-			<Route element={<Layout />}>
+		<>
+			<Header />
+			<Routes>
 				{routesConfig.map((route) => {
 					return (
 						<Route key={route.path} path={route.path} element={route.element} />
 					);
 				})}
-			</Route>
-		</Routes>
+			</Routes>
+		</>
 	);
 }

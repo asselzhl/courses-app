@@ -5,7 +5,13 @@ import { FormFieldWithError } from '../../common/FormFieldWithError/FormFieldWit
 import { Button } from '../../common/Button/Button';
 
 import { validateInputValues } from '../../helpers/validateInputValues';
-import { createRequest } from '../../helpers/apiServices';
+import { formFieldsMap } from '../../common/FormFieldWithError/formFieldsMap';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch } from 'src/store';
+import { setErrorMessages } from '../../store/slices/errorMessages/errorMessagesSlice';
+import { agent, endpoints } from '../../store/thunks/apiConfig/apiConfig';
+import { routePaths } from '../../routePaths';
+import { getErrorMessages } from '../../store/selectors';
 
 const style = {
 	blockTitle: `text-[#333E48] font-bold text-3xl mb-6`,
@@ -13,14 +19,11 @@ const style = {
 	registrationFormWrapper: `bg-[#F7F7F7] h-screen py-20 flex flex-col justify-center items-center`,
 };
 
-interface ErrorMessages {
-	[key: string]: string;
-}
-
 export const Registration = () => {
 	const navigate = useNavigate();
+	const dispatch = useDispatch<AppDispatch>();
 
-	const [errorMessages, setErrorMessages] = useState<ErrorMessages>({});
+	const errorMessages = useSelector(getErrorMessages);
 	const initialNewUserData = {
 		name: '',
 		email: '',
@@ -40,12 +43,16 @@ export const Registration = () => {
 
 		const errors = validateInputValues(newUserData, {});
 
-		setErrorMessages(errors);
+		dispatch(setErrorMessages(errors));
 
 		if (Object.keys(errors).length === 0) {
-			createRequest('http://localhost:4000/register', 'POST', newUserData);
-			setNewUserData(initialNewUserData);
-			navigate('/login');
+			try {
+				agent.post(endpoints.auth.register, newUserData);
+				setNewUserData(initialNewUserData);
+				navigate(routePaths.login);
+			} catch (error) {
+				console.error(error);
+			}
 		}
 	};
 	return (
@@ -55,35 +62,23 @@ export const Registration = () => {
 
 				<form onSubmit={handleFormSubmit} className={style.formContainer}>
 					<FormFieldWithError
-						type='text'
-						labelText='Name'
-						placeholderText='Name'
 						value={newUserData.name}
-						name='name'
-						inputID='name'
-						errorMessage={errorMessages.name}
+						name={formFieldsMap.name.name}
+						errorMessages={errorMessages}
 						onChange={handleNewUserDataChange}
 					/>
 
 					<FormFieldWithError
-						type='email'
-						labelText='Email'
-						placeholderText='Email'
 						value={newUserData.email}
-						name='email'
-						inputID='email'
-						errorMessage={errorMessages.email}
+						name={formFieldsMap.email.name}
+						errorMessages={errorMessages}
 						onChange={handleNewUserDataChange}
 					/>
 
 					<FormFieldWithError
-						type='password'
-						labelText='Password'
-						placeholderText='Password'
 						value={newUserData.password}
-						name='password'
-						inputID='password'
-						errorMessage={errorMessages.password}
+						name={formFieldsMap.password.name}
+						errorMessages={errorMessages}
 						onChange={handleNewUserDataChange}
 					/>
 

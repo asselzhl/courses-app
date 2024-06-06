@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Button } from '../../../../common/Button/Button';
 import { AppDispatch } from 'src/store';
-import { removeCourse } from '../../../../store/courses/coursesSlice';
+import { getCurrentUserRole } from '../../../../store/selectors';
+import { userRoles } from '../../../../store/slices/constants';
+import { deleteCourse } from '../../../../store/thunks/coursesThunk';
 
 const style = {
 	courseCardWrapper: `p-8 bg-[#FFFFFF] rounded border-l-8 border-[#333E48] shadow-lg shadow-slate-300 mb-8`,
@@ -36,8 +38,10 @@ export const CourseCard = ({
 	];
 	const dispatch = useDispatch<AppDispatch>();
 
+	const currentUserRole = useSelector(getCurrentUserRole);
+
 	const handleDeleteButton = () => {
-		dispatch(removeCourse(id));
+		dispatch(deleteCourse(id));
 	};
 
 	return (
@@ -58,11 +62,17 @@ export const CourseCard = ({
 						))}
 					</div>
 					<div className='flex gap-3 items-center flex-wrap'>
-						<Link to={`courses/${id}`}>
+						<Link to={id}>
 							<Button text='show course' onClick={() => {}} />
 						</Link>
-						<Button text='delete' onClick={handleDeleteButton} />
-						<Button text='update' onClick={() => {}} />
+						{currentUserRole === userRoles.admin ? (
+							<>
+								<Button text='delete' onClick={handleDeleteButton} />
+								<Link to={`update/${id}`}>
+									<Button text='update' onClick={() => {}} />
+								</Link>
+							</>
+						) : null}
 					</div>
 				</div>
 			</div>
